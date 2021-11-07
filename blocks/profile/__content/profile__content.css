@@ -6,6 +6,12 @@
   width: 100%;
 }
 
+@media (max-width: 650px) {
+  .profile__content {
+    flex-direction: column;    
+  }
+} 
+
 @media (max-width: 918px) {
   .profile__content {
     margin: 0px 19px 0px 19px;
