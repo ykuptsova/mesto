@@ -82,15 +82,18 @@
       </div>
     </section>
 
-    <section class="popup popup_opened2">      
+    <section class="popup popup_opened">      
       <div class="popup__overlay"></div>
       <div class="popup__container">
-        Close Button, Title, Inputs, Button
         <h2 class="popup__title">Редактировать профиль</h2>
         <div class="popup__inputs">
-          <p class="popup__name">Хвост</p>
-          <p class="popup__info">Путешественник</p>
+          <input class="popup__input popup__name" placeholder="Имя" value="Хвост"/>
+          <input class="popup__input popup__info" placeholder="О Себе" value="Путешественник"/>
         </div>
+        <div class="popup__button">
+          Сохранить
+        </div>
+        <img class="popup__close-button" src="./images/close-button.svg"/>
       </div>
     </section>
   </main>
