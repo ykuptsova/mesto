@@ -21,13 +21,13 @@
         <img class="profile__pic" src="./images/profile.jpeg"/>
         <div class="profile__texts">
           <div class="profile__name-container">
-            <h1 class="profile__name">Хвост</h1>
+            <h1 class="profile__name"></h1>
             <img class="profile__edit-button" src="./images/edit-button.svg"/>
           </div>
-          <p class="profile__info">Путешественник</p>
+          <p class="profile__info"></p>
         </div>                
         <div class="profile__spacer"></div>
-        <img class="profile_plus-button" src="./images/plus-button.svg"/>
+        <img class="profile__plus-button" src="./images/plus-button.svg"/>
       </div>
     </section>
 
@@ -82,15 +82,15 @@
       </div>
     </section>
 
-    <section class="popup popup_opened">      
+    <section class="popup">      
       <div class="popup__overlay"></div>
       <div class="popup__container">
         <h2 class="popup__title">Редактировать профиль</h2>
         <div class="popup__inputs">
-          <input class="popup__input popup__name" placeholder="Имя" value="Хвост"/>
-          <input class="popup__input popup__info" placeholder="О Себе" value="Путешественник"/>
+          <input class="popup__input popup__name" placeholder="Имя" value=""/>
+          <input class="popup__input popup__info" placeholder="О Себе" value=""/>
         </div>
-        <div class="popup__button">
+        <div class="popup__save-button">
           Сохранить
         </div>
         <img class="popup__close-button" src="./images/close-button.svg"/>
@@ -101,6 +101,8 @@
   <footer class="footer">
     <p class="footer__content">&copy; 2021. Mesto World</p>
   </footer>
+
+  <script src="./scripts/main.js"></script>
 </body>
 
 </html>

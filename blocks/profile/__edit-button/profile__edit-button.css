@@ -4,4 +4,10 @@
   position: absolute;
   bottom: 24px;
   right: -42px;
+  cursor: pointer;
+  transition: opacity 300ms;
+}
+
+.profile__edit-button:hover {
+  opacity: 0.6;
 }
