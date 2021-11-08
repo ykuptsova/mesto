@@ -4,6 +4,8 @@
   cursor: pointer;
   transition: opacity 300ms;
   margin-left: 18px;
+  border: none;
+  background: url('../../../images/edit-button.svg');
 }
 
 .profile__edit-button:hover {

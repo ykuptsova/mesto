@@ -4,6 +4,7 @@
   right: -40px;
   cursor: pointer;
   transition: opacity 300ms;
+  border: none;
 }
 
 

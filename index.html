@@ -19,12 +19,10 @@
         <img class="profile__pic" src="./images/profile.jpeg" alt="Фото Профиля"/>
         <div class="profile__texts">
           <div class="profile__name-container">
-            <h1 class="profile__name">&nbsp;</h1>
-            <div class="profile__edit-button">
-              <img src="./images/edit-button.svg" alt="Кнопка Редактировать Профиль"/>
-            </div>
+            <h1 class="profile__name">Хвост</h1>
+            <button class="profile__edit-button" type="button"></button>
           </div>
-          <p class="profile__info">&nbsp;</p>
+          <p class="profile__info">Путешественник</p>
         </div>                
         <div class="profile__spacer"></div>
         <img class="profile__plus-button" src="./images/plus-button.svg" alt="Кнопка Добавить Место"/>
@@ -79,16 +77,13 @@
     </section>
 
     <section class="popup">      
-      <div class="popup__overlay"></div>
       <div class="popup__container">
         <h2 class="popup__title">Редактировать профиль</h2>
-        <div class="popup__inputs">
+        <form class="popup__inputs">
           <input class="popup__input popup__name" placeholder="Имя" value=""/>
           <input class="popup__input popup__info" placeholder="О Себе" value=""/>
-        </div>
-        <div class="popup__save-button">
-          Сохранить
-        </div>
+          <button type="submit" class="popup__save-button">Сохранить</button>
+        </form>
         <img class="popup__close-button" src="./images/close-button.svg" alt="Кнопка Закрыть Форму"/>
       </div>
     </section>
