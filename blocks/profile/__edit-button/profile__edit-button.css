@@ -1,13 +1,19 @@
 .profile__edit-button {
   width: 24px;
   height: 24px;
-  position: absolute;
-  bottom: 24px;
-  right: -42px;
   cursor: pointer;
   transition: opacity 300ms;
+  margin-left: 18px;
 }
 
 .profile__edit-button:hover {
   opacity: 0.6;
 }
+
+@media (max-width: 650px) {
+  .profile__edit-button {
+    position: absolute;
+    bottom: 24px;
+    right: -42px; 
+  }
+} 
