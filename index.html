@@ -25,7 +25,9 @@
           <p class="profile__info">Путешественник</p>
         </div>                
         <div class="profile__spacer"></div>
-        <img class="profile__plus-button" src="./images/plus-button.svg" alt="Кнопка Добавить Место"/>
+        <button class="profile__plus-button">
+          <img class="profile__plus" src="./images/plus.svg" alt="Кнопка Добавить Место"/>
+        </button>
       </div>
     </section>
 
@@ -79,12 +81,12 @@
     <section class="popup">      
       <div class="popup__container">
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__inputs">
+        <form class="popup__form">
           <input class="popup__input popup__name" placeholder="Имя" value=""/>
           <input class="popup__input popup__info" placeholder="О Себе" value=""/>
           <button type="submit" class="popup__save-button">Сохранить</button>
         </form>
-        <img class="popup__close-button" src="./images/close-button.svg" alt="Кнопка Закрыть Форму"/>
+        <button class="popup__close-button" type="button">
       </div>
     </section>
   </main>

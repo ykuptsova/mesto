@@ -1,8 +1,21 @@
 .profile__plus-button {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #fff;
   transition: opacity 300ms;
   cursor: pointer;
+  background: none;
+  width: 150px;
+  height: 50px;
 }
 
 .profile__plus-button:hover {
   opacity: 0.6;
 }
+
+@media (max-width: 635px) {
+  .profile__plus-button {
+    width: 100%;
+    height: 50px;
+  }
+} 
