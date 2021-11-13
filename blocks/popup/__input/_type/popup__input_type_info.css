@@ -1,10 +1,10 @@
-.popup__info {
+.popup__input_type_info {
   margin-bottom: 48px;
 }
 
 
 @media (max-width: 463px) {
-  .popup__info {
+  .popup__input_type_info {
     margin-bottom: 45px;
   }
 } 

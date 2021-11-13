@@ -1,7 +1,6 @@
 .profile__name-container {
   position: relative;
   display: flex;
-  flex-direction: row;
   align-items: baseline;
   max-width: calc(100% - 100px);
 }
