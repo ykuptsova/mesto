@@ -23,9 +23,11 @@
   }
 } 
 
-@media (max-width: 320px) {
+@media (max-width: 335px) {
   .popup__close-button {
     width: 20px;
     height: 20px;
+    top: -36px;
+    background: center/20px url('../../../images/close-button.svg')
   }
 } 

@@ -7,3 +7,10 @@
   overflow: hidden;
   max-width: 100%;
 }
+
+
+@media (max-width: 335px) {
+  .profile__info {
+    font-size: 14px;
+  }
+} 
