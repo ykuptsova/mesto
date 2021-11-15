@@ -28,6 +28,6 @@
     width: 20px;
     height: 20px;
     top: -36px;
-    background: center/20px url('../../../images/close-button.svg')
+    background: center/20px url('../../../images/close-button.svg');
   }
 } 
