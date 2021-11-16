@@ -2,5 +2,5 @@
   position: relative;
   display: flex;
   align-items: baseline;
-  max-width: calc(100% - 20px);
+  max-width: calc(100% - 40px);
 }

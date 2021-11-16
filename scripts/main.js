@@ -8,19 +8,19 @@ const profileName = document.querySelector('.profile__name')
 const profileInfo = document.querySelector('.profile__info')
 
 
-function openPopup () {
+function openPopup (event) {
   inputName.value = profileName.textContent
   inputInfo.value = profileInfo.textContent
   popup.classList.add('popup_opened')
 }
 
 
-function closePopup () {
+function closePopup (event) {
   popup.classList.remove('popup_opened')
 }
 
 
-function editProfile () {
+function editProfile (event) {
   event.preventDefault()
   profileName.textContent = inputName.value
   profileInfo.textContent = inputInfo.value
