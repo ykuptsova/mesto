@@ -22,6 +22,7 @@ const dom = {
     inputName: document.querySelector('.addPlace .popup__form .popup__input_type_name'),
     inputInfo: document.querySelector('.addPlace .popup__form .popup__input_type_info'),    
   },
+
 }
 
 
@@ -78,11 +79,6 @@ function createCard (card) {
     element.parentElement.removeChild(element)
   })
 
-  // добавляем слушатель открытия попапа с картинкой
-  element.querySelector('.element__image').addEventListener('click', () => {
-    console.log('to be done')
-  })
-
   // добавляем карточку на страницу
   dom.elementsContent.append(element)  
 }
@@ -96,8 +92,10 @@ dom.profileEditButton.addEventListener('click', () => {
   dom.editProfile.inputInfo.value = dom.profileInfo.textContent
   dom.editProfile.popup.classList.add('popup_opened')
 })
-dom.editProfile.closeButton.addEventListener('click', () => {
+dom.editProfile.closeButton.addEventListener('click', () => {  
+  dom.editProfile.popup.style.visibility = 'visible'
   dom.editProfile.popup.classList.remove('popup_opened')
+  setTimeout(() => dom.editProfile.popup.style.visibility = null, 500)
 })
 dom.editProfile.formElement.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -114,7 +112,10 @@ dom.profilePlusButton.addEventListener('click', () => {
   dom.addPlace.popup.classList.add('popup_opened')
 })
 dom.addPlace.closeButton.addEventListener('click', () => {
+  dom.addPlace.popup.style.visibility = 'visible'
   dom.addPlace.popup.classList.remove('popup_opened')
+  setTimeout(() => dom.addPlace.popup.style.visibility = null, 500)
+  
 })
 dom.addPlace.formElement.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -124,3 +125,8 @@ dom.addPlace.formElement.addEventListener('submit', (event) => {
   createCard({ name, link, alt })
   dom.addPlace.popup.classList.remove('popup_opened')
 })
+
+// добавляем слушатель открытия и закрытия попапа с картинкой
+// element.querySelector('.element__image').addEventListener('click', () => {
+
+// })
