@@ -1,31 +1,3 @@
-const dom = {
-  elementTemplate: document.querySelector('#element__template'),
-  elementsContent: document.querySelector('.elements__content'),
-
-  profileName: document.querySelector('.profile__name'),
-  profileInfo: document.querySelector('.profile__info'),
-
-  profileEditButton: document.querySelector('.profile__edit-button'),
-  editProfile: {
-    popup: document.querySelector('.editProfile.popup'),
-    closeButton: document.querySelector('.editProfile .popup__close-button'),
-    formElement: document.querySelector('.editProfile .popup__form'),
-    inputName: document.querySelector('.editProfile .popup__form .popup__input_type_name'),
-    inputInfo: document.querySelector('.editProfile .popup__form .popup__input_type_info'),    
-  },
-
-  profilePlusButton: document.querySelector('.profile__plus-button'),
-  addPlace: {
-    popup: document.querySelector('.addPlace.popup'),
-    closeButton: document.querySelector('.addPlace .popup__close-button'),
-    formElement: document.querySelector('.addPlace .popup__form'),
-    inputName: document.querySelector('.addPlace .popup__form .popup__input_type_name'),
-    inputInfo: document.querySelector('.addPlace .popup__form .popup__input_type_info'),    
-  },
-
-}
-
-
 const initialCards = [
   {
     name: 'Норвегия, Лофотены',
@@ -60,6 +32,42 @@ const initialCards = [
 ]; 
 
 
+// определяем все DOM-элементы в одной константе для удобства доступа
+const dom = {
+  elementTemplate: document.querySelector('#element__template'),
+  elementsContent: document.querySelector('.elements__content'),
+
+  profileName: document.querySelector('.profile__name'),
+  profileInfo: document.querySelector('.profile__info'),
+
+  profileEditButton: document.querySelector('.profile__edit-button'),
+  editProfile: {
+    popup: document.querySelector('#editProfile'),
+    closeButton: document.querySelector('#editProfile .popup__close-button'),
+    formElement: document.querySelector('#editProfile .popup__form'),
+    inputName: document.querySelector('#editProfile .popup__form .popup__input_type_name'),
+    inputInfo: document.querySelector('#editProfile .popup__form .popup__input_type_info'),    
+  },
+
+  profilePlusButton: document.querySelector('.profile__plus-button'),
+  addPlace: {
+    popup: document.querySelector('#addPlace'),
+    closeButton: document.querySelector('#addPlace .popup__close-button'),
+    formElement: document.querySelector('#addPlace .popup__form'),
+    inputName: document.querySelector('#addPlace .popup__form .popup__input_type_name'),
+    inputInfo: document.querySelector('#addPlace .popup__form .popup__input_type_info'),    
+  },
+
+  openImg: {
+    popup: document.querySelector('#openImg'),
+    image: document.querySelector('#openImg .popup__image'),
+    description: document.querySelector('#openImg .popup__image-description'),
+    closeButton: document.querySelector('#openImg .popup__close-button'), 
+  },
+}
+
+
+// создает элемент для заданной карточки
 function createCard (card) {
   // клонируем template карточки
   const element = dom.elementTemplate.content.querySelector('.element').cloneNode(true)
@@ -79,10 +87,28 @@ function createCard (card) {
     element.parentElement.removeChild(element)
   })
 
+  // добавляем слушатель открытия попапа с картинкой
+  element.querySelector('.element__image').addEventListener('click', () => {
+    dom.openImg.description.innerText = card.name
+    dom.openImg.image.setAttribute('src', card.link)
+    dom.openImg.image.setAttribute('alt', card.alt)
+    dom.openImg.popup.classList.add('popup_opened')
+  })
+
   // добавляем карточку на страницу
   dom.elementsContent.append(element)  
 }
 
+
+// закрывает заданный попап с транзицией
+function closePopup (popup) {  
+  popup.style.visibility = 'visible'
+  popup.classList.remove('popup_opened')
+  setTimeout(() => popup.style.visibility = null, 500)
+}
+
+
+// создаем все карточки на старте
 initialCards.forEach(createCard)
 
 
@@ -93,9 +119,7 @@ dom.profileEditButton.addEventListener('click', () => {
   dom.editProfile.popup.classList.add('popup_opened')
 })
 dom.editProfile.closeButton.addEventListener('click', () => {  
-  dom.editProfile.popup.style.visibility = 'visible'
-  dom.editProfile.popup.classList.remove('popup_opened')
-  setTimeout(() => dom.editProfile.popup.style.visibility = null, 500)
+  closePopup(dom.editProfile.popup)
 })
 dom.editProfile.formElement.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -112,10 +136,7 @@ dom.profilePlusButton.addEventListener('click', () => {
   dom.addPlace.popup.classList.add('popup_opened')
 })
 dom.addPlace.closeButton.addEventListener('click', () => {
-  dom.addPlace.popup.style.visibility = 'visible'
-  dom.addPlace.popup.classList.remove('popup_opened')
-  setTimeout(() => dom.addPlace.popup.style.visibility = null, 500)
-  
+  closePopup(dom.addPlace.popup)
 })
 dom.addPlace.formElement.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -126,7 +147,8 @@ dom.addPlace.formElement.addEventListener('submit', (event) => {
   dom.addPlace.popup.classList.remove('popup_opened')
 })
 
-// добавляем слушатель открытия и закрытия попапа с картинкой
-// element.querySelector('.element__image').addEventListener('click', () => {
 
-// })
+// добавляем слушатели закрытия попапа с полноэкранной картинкой
+dom.openImg.closeButton.addEventListener('click', () => {
+  closePopup(dom.openImg.popup)
+})
