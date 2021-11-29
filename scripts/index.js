@@ -47,12 +47,12 @@ function handleTrash (evt) {
 }
 
 
-// обработчик слушателя добавления карточки
-function addNewCard (event) {
+// обработчик слушателя редактирования профиля
+function handleProfileSubmit (event) {
   event.preventDefault()
   dom.profileName.textContent = dom.popupProfile.inputName.value
   dom.profileInfo.textContent = dom.popupProfile.inputInfo.value
-  openPopup(dom.popupProfile.popup)
+  closePopup(dom.popupProfile.popup)
 }
 
 
@@ -85,6 +85,19 @@ function createCard (card) {
 }
 
 
+// добавляет новую карточку места
+function addNewCard (event) {
+  event.preventDefault()
+  const name = dom.popupPlace.inputName.value
+  const link = dom.popupPlace.inputInfo.value
+  const alt = `${name}, Фото`
+  const cardElement = createCard({ name, link, alt })
+  dom.elementsContent.prepend(cardElement)
+  dom.popupPlace.formElement.reset()
+  closePopup(dom.popupPlace.popup)    
+}
+
+
 // открывает попап
 function openPopup (popup) {
   popup.classList.add('popup_opened')
@@ -92,8 +105,7 @@ function openPopup (popup) {
 
 
 // закрывает заданный попап с транзицией
-function closePopup (event) {  
-  const popup = event.target.closest('.popup')
+function closePopup (popup) {  
   popup.style.visibility = 'visible'
   popup.classList.remove('popup_opened')
   setTimeout(() => popup.style.visibility = null, 500)
@@ -111,29 +123,26 @@ initialCards.forEach((card) => {
 dom.profileEditButton.addEventListener('click', () => {
   dom.popupProfile.inputName.value = dom.profileName.textContent
   dom.popupProfile.inputInfo.value = dom.profileInfo.textContent
-  dom.popupProfile.popup.classList.add('popup_opened')
+  openPopup(dom.popupProfile.popup)
 })
-dom.popupProfile.closeButton.addEventListener('click', closePopup)
-dom.popupProfile.formElement.addEventListener('submit', addNewCard)
+dom.popupProfile.closeButton.addEventListener('click', () => {
+  closePopup(dom.popupProfile.popup)
+})
+dom.popupProfile.formElement.addEventListener('submit', handleProfileSubmit)
 
 
 // добавляем слушатели открытия и закрытия попапа добавления карточки
 dom.newCardButton.addEventListener('click', () => {
   openPopup(dom.popupPlace.popup)
 })
-dom.popupPlace.closeButton.addEventListener('click', closePopup)
-dom.popupPlace.formElement.addEventListener('submit', (event) => {
-  event.preventDefault()
-  const name = dom.popupPlace.inputName.value
-  const link = dom.popupPlace.inputInfo.value
-  const alt = `${name}, Фото`
-  const cardElement = createCard({ name, link, alt })
-  dom.elementsContent.prepend(cardElement)  
-  dom.popupPlace.popup.classList.remove('popup_opened')  
-  dom.popupPlace.formElement.reset()
+dom.popupPlace.closeButton.addEventListener('click', () => {
+  closePopup(dom.popupPlace.popup)
 })
+dom.popupPlace.formElement.addEventListener('submit', addNewCard)
 
 
 // добавляем слушатели закрытия попапа с полноэкранной картинкой
-dom.popupPicture.closeButton.addEventListener('click', closePopup)
+dom.popupPicture.closeButton.addEventListener('click', () => {
+  closePopup(dom.popupPicture.popup)
+})
 
