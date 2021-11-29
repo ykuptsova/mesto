@@ -24,22 +24,12 @@
           </div>
           <p class="profile__info">Путешественник</p>
         </div>                
-        <button class="profile__plus-button"></button>
+        <button class="profile__new-card-button"></button>
       </div>
     </section>
 
     <section class="elements">
       <div class="elements__content">        
-        <template id="element__template">
-          <article class="element">  
-            <img class="element__image" src="{{src}}" alt="{{alt}}"/>
-            <div class="element__description">
-              <h2 class="element__title">{{name}}</h2> 
-              <button class="element__heart" type="button"></button>
-            </div>
-            <img class="element__trash" src="./images/trash.svg"/>
-          </article>    
-        </template>
         <!--
           Элементы карточек добавляются сюда динамически,
           клонируя element__template
@@ -52,31 +42,31 @@
     <p class="footer__content">&copy; 2021. Mesto World</p>
   </footer>
 
-  <div id="editProfile" class="popup">      
+  <div class="popup popup_type_profile">      
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="profile">
-        <input class="popup__input popup__input_type_name" name="name" placeholder="Имя"/>
-        <input class="popup__input popup__input_type_info" name="info" placeholder="О Себе"/>
+        <input class="popup__input popup__input_type_name" name="name" type="text" placeholder="Имя" required/>
+        <input class="popup__input popup__input_type_info" name="info" type="text" placeholder="О Себе" required/>
         <button type="submit" class="popup__save-button">Сохранить</button>
       </form>
       <button class="popup__close-button" type="button"></button>
     </div>
   </div>
 
-  <div id="addPlace" class="popup">      
+  <div class="popup popup_type_card-add">      
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
       <form class="popup__form" name="profile">
-        <input class="popup__input popup__input_type_name" name="card_name" placeholder="Название"/>
-        <input class="popup__input popup__input_type_info" name="link" placeholder="Ссылка на картинку"/>
+        <input class="popup__input popup__input_type_name" name="card_name" type="text" placeholder="Название" required/>
+        <input class="popup__input popup__input_type_info" name="link" type="url" placeholder="Ссылка на картинку" required/>
         <button type="submit" class="popup__save-button">Создать</button>
       </form>
       <button class="popup__close-button" type="button"></button>
     </div>
   </div>
 
-  <div id="openImg" class="popup popup_dimmed">      
+  <div class="popup popup_dimmed popup_type_picture">      
     <div class="popup__image-container">
       <img class="popup__image">
       <p class="popup__image-description">{{description}}</p>
@@ -84,7 +74,19 @@
     </div>    
   </div>
   
-  <script src="./scripts/main.js"></script>
+  <template class="element__template">
+    <article class="element">  
+      <img class="element__image" src="{{src}}" alt="{{alt}}"/>
+      <div class="element__description">
+        <h2 class="element__title">{{name}}</h2> 
+        <button class="element__heart" type="button"></button>
+      </div>
+      <img class="element__trash" src="./images/trash.svg"/>
+    </article>    
+  </template>
+
+  <script src="./scripts/initial-cards.js"></script>
+  <script src="./scripts/index.js"></script>
 </body>
 
 </html>
