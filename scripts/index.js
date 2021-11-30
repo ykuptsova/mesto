@@ -42,8 +42,7 @@ function handleLike (evt) {
 // обработчик слушателя trash карточки
 function handleTrash (evt) {
   const element = evt.target.closest('.element')
-  element.parentElement.removeChild(element)
-  // element.closest('.elements__content').removeChild(element)
+  element.remove()
 }
 
 
