@@ -1,7 +1,6 @@
 // валидирует заданную форму
 function validate (form, formInput, showErrors = true) {
-  const inputErrorClass = 'popup__input_type_error'
-  const submitButtonInactiveClass = 'popup__save-button_disabled'
+  const inputErrorClass = 'popup__input_type_error'  
 
   let formInvalid = false
 
@@ -9,8 +8,11 @@ function validate (form, formInput, showErrors = true) {
   fields.forEach(field => {
     const input = field.querySelector('.popup__input')
     const error = field.querySelector('.popup__input-error')
-    if (formInput && input === formInput) {
-      if (!input.validity.valid && showErrors) {
+    if (!showErrors) {
+      input.classList.remove(inputErrorClass)
+      error.textContent = ''
+    } else if (formInput && input === formInput) {
+      if (!input.validity.valid) {
         input.classList.add(inputErrorClass)
         error.textContent = input.validationMessage        
       } else {      
@@ -22,25 +24,34 @@ function validate (form, formInput, showErrors = true) {
   })
 
   const submitButton = form.querySelector('.popup__save-button')    
-  if (formInvalid) {
-    submitButton.classList.add(submitButtonInactiveClass)       
-  } else {
+  setSubmitButtonActive(submitButton, !formInvalid)
+}
+
+
+// устанавлиает состояние активности для submit кнопки формы
+function setSubmitButtonActive (submitButton, active) {
+  const submitButtonInactiveClass = 'popup__save-button_disabled'
+  if (active) {
     submitButton.classList.remove(submitButtonInactiveClass)             
+  } else {
+    submitButton.classList.add(submitButtonInactiveClass)           
   }
 }
 
 
 // включает валидацию заданной формы по изменению полей ввода
-function enableValidation (form) {
-  validate(form)
-  form.querySelectorAll('.popup__input').forEach(input => {
-    input.addEventListener('input', () => {
-      validate(form, input)
+function enableValidation (config) {
+  validate(config.form)
+  config.form
+    .querySelectorAll(config.inputClass)
+    .forEach(input => {
+      input.addEventListener('input', () => {
+        validate(config.form, input)
+      })
     })
-  })
 }
 
 
 // включаем валидацию для форм
-enableValidation(dom.popupProfile.form)
-enableValidation(dom.popupPlace.form)
+enableValidation({ form: dom.popupProfile.form, inputClass: '.popup__input' })
+enableValidation({ form: dom.popupPlace.form, inputClass: '.popup__input' })
