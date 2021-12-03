@@ -5,4 +5,5 @@
   padding: 0 0 10px 0;
   width: 100%;
   font-size: 14px;
+  transition: border 300ms;
 }

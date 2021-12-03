@@ -1,38 +1,3 @@
-// определяем все DOM-элементы в одной константе для удобства доступа
-const dom = {
-  elementTemplate: document.querySelector('.element__template'),
-  elementsContent: document.querySelector('.elements__content'),
-
-  profileName: document.querySelector('.profile__name'),
-  profileInfo: document.querySelector('.profile__info'),
-
-  profileEditButton: document.querySelector('.profile__edit-button'),
-  popupProfile: {
-    popup: document.querySelector('.popup_type_profile'),
-    closeButton: document.querySelector('.popup_type_profile .popup__close-button'),
-    formElement: document.querySelector('.popup_type_profile .popup__form'),
-    inputName: document.querySelector('.popup_type_profile .popup__form .popup__input_type_name'),
-    inputInfo: document.querySelector('.popup_type_profile .popup__form .popup__input_type_info'),    
-  },
-
-  newCardButton: document.querySelector('.profile__new-card-button'),
-  popupPlace: {
-    popup: document.querySelector('.popup_type_card-add'),
-    closeButton: document.querySelector('.popup_type_card-add .popup__close-button'),
-    formElement: document.querySelector('.popup_type_card-add .popup__form'),
-    inputName: document.querySelector('.popup_type_card-add .popup__form .popup__input_type_name'),
-    inputInfo: document.querySelector('.popup_type_card-add .popup__form .popup__input_type_info'),    
-  },
-
-  popupPicture: {
-    popup: document.querySelector('.popup_type_picture'),
-    image: document.querySelector('.popup_type_picture .popup__image'),
-    description: document.querySelector('.popup_type_picture .popup__image-description'),
-    closeButton: document.querySelector('.popup_type_picture .popup__close-button'), 
-  },
-}
-
-
 // обработчик слушателя like карточки
 function handleLike (evt) {
   evt.target.classList.toggle('element__heart_active');
@@ -92,7 +57,7 @@ function addNewCard (event) {
   const alt = `${name}, Фото`
   const cardElement = createCard({ name, link, alt })
   dom.elementsContent.prepend(cardElement)
-  dom.popupPlace.formElement.reset()
+  dom.popupPlace.formElement.reset()  
   closePopup(dom.popupPlace.popup)    
 }
 
@@ -119,9 +84,10 @@ initialCards.forEach((card) => {
 
 
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
-dom.profileEditButton.addEventListener('click', () => {
+dom.profileEditButton.addEventListener('click', () => {  
   dom.popupProfile.inputName.value = dom.profileName.textContent
-  dom.popupProfile.inputInfo.value = dom.profileInfo.textContent
+  dom.popupProfile.inputInfo.value = dom.profileInfo.textContent  
+  validate(dom.popupProfile.form, null, false)
   openPopup(dom.popupProfile.popup)
 })
 dom.popupProfile.closeButton.addEventListener('click', () => {
@@ -132,6 +98,7 @@ dom.popupProfile.formElement.addEventListener('submit', handleProfileSubmit)
 
 // добавляем слушатели открытия и закрытия попапа добавления карточки
 dom.newCardButton.addEventListener('click', () => {
+  validate(dom.popupPlace.form, null, false)
   openPopup(dom.popupPlace.popup)
 })
 dom.popupPlace.closeButton.addEventListener('click', () => {
@@ -145,3 +112,25 @@ dom.popupPicture.closeButton.addEventListener('click', () => {
   closePopup(dom.popupPicture.popup)
 })
 
+
+// добавляем слушатель закрытия попапа по клику на overlay
+const popups = [dom.popupProfile.popup, dom.popupPlace.popup, dom.popupPicture.popup]
+popups.forEach(popup => {
+  popup.addEventListener('click', (event) => {
+    // если клик был снаружи контейнера, то он был на overlay-е -> закрываем попап
+    if (event.target.closest('.popup__container')) return
+    closePopup(popup)
+  })
+})
+
+
+// добавляем слушатель закрытия попапов на нажатие Esc
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    // находим открытый popup
+    const openedPopup = document.querySelector('.popup_opened')
+    if (openedPopup) {
+      closePopup(openedPopup)  
+    }
+  }
+})

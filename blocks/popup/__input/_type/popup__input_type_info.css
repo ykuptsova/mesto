@@ -1,10 +1,1 @@
-.popup__input_type_info {
-  margin-bottom: 47px;
-}
-
-
-@media (max-width: 463px) {
-  .popup__input_type_info {
-    margin-bottom: 45px;
-  }
-} 
+.popup__input_type_info {}
