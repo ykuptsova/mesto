@@ -1,18 +1,24 @@
-const hideInputError = (inputElement, { errorClass, inputErrorClass }) => {
+const hideInputError = (
+  inputElement,
+  { errorVisibleClass, inputErrorClass, fieldSelector, errorSelector },
+) => {
   const errorElement = inputElement
-    .closest('.popup__form-field')
-    .querySelector(`.popup__input-error`)
+    .closest(fieldSelector)
+    .querySelector(errorSelector)
   inputElement.classList.remove(inputErrorClass)
-  errorElement.classList.remove(errorClass)
+  errorElement.classList.remove(errorVisibleClass)
   errorElement.textContent = ''
 }
 
-const showInputError = (inputElement, { errorClass, inputErrorClass }) => {
+const showInputError = (
+  inputElement,
+  { errorVisibleClass, inputErrorClass, fieldSelector, errorSelector },
+) => {
   const errorElement = inputElement
-    .closest('.popup__form-field')
-    .querySelector(`.popup__input-error`)
+    .closest(fieldSelector)
+    .querySelector(errorSelector)
   inputElement.classList.add(inputErrorClass)
-  errorElement.classList.add(errorClass)
+  errorElement.classList.add(errorVisibleClass)
   errorElement.textContent = inputElement.validationMessage
 }
 
@@ -39,7 +45,7 @@ const setEventListeners = (formElement, config) => {
     inputSelector,
     submitButtonSelector,
     inactiveButtonClass,
-    errorClass,
+    errorVisibleClass,
     inputErrorClass,
   } = config
   // inputSelector позволяет найти все поля ввода
@@ -53,7 +59,7 @@ const setEventListeners = (formElement, config) => {
   // навешиваем слушатель на ввод в поля пароля
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      checkInputValidity(inputElement, { errorClass, inputErrorClass })
+      checkInputValidity(inputElement, config)
       toggleButtonState(formElement, buttonElement, inactiveButtonClass)
     })
   })

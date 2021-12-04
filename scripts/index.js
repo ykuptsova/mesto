@@ -133,9 +133,11 @@ function initForms() {
   dom.popupProfile.inputInfo.value = dom.profileInfo.textContent
 
   const validationClasses = {
-    inactiveButtonClass: 'popup__save-button_disabled',
-    errorClass: 'popup__input-error_visible',
+    fieldSelector: '.popup__form-field',
+    errorSelector: '.popup__input-error',
+    errorVisibleClass: 'popup__input-error_visible',
     inputErrorClass: 'popup__input_type_error',
+    inactiveButtonClass: 'popup__save-button_disabled',
   }
 
   // валидация полей редактирования профиля

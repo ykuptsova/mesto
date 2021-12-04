@@ -1,114 +1,151 @@
 <!DOCTYPE html>
 <html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./pages/index.css" />
+    <title>Место</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
-  <title>Место</title>  
-</head>
+  <body class="page">
+    <header class="header">
+      <img
+        class="header__logo"
+        src="./images/logo.svg"
+        alt="Лого Проекта Место"
+      />
+    </header>
 
-<body class="page">
-  <header class="header">
-    <img class="header__logo" src="./images/logo.svg" alt="Лого Проекта Место"/>
-  </header>
-
-  <main class="content">
-    <section class="profile">
-      <div class="profile__content">
-        <img class="profile__pic" src="./images/profile.jpeg" alt="Фото Профиля"/>
-        <div class="profile__texts">
-          <div class="profile__name-container">
-            <h1 class="profile__name">Хвост</h1>
-            <button class="profile__edit-button" type="button"></button>
+    <main class="content">
+      <section class="profile">
+        <div class="profile__content">
+          <img
+            class="profile__pic"
+            src="./images/profile.jpeg"
+            alt="Фото Профиля"
+          />
+          <div class="profile__texts">
+            <div class="profile__name-container">
+              <h1 class="profile__name">Хвост</h1>
+              <button class="profile__edit-button" type="button"></button>
+            </div>
+            <p class="profile__info">Путешественник</p>
           </div>
-          <p class="profile__info">Путешественник</p>
-        </div>                
-        <button class="profile__new-card-button"></button>
-      </div>
-    </section>
+          <button class="profile__new-card-button"></button>
+        </div>
+      </section>
 
-    <section class="elements">
-      <div class="elements__content">        
-        <!--
+      <section class="elements">
+        <div class="elements__content">
+          <!--
           Элементы карточек добавляются сюда динамически,
           клонируя element__template
-        -->
+        --></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__content">&copy; 2021. Mesto World</p>
+    </footer>
+
+    <div class="popup popup_type_profile">
+      <div class="popup__container">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <form class="popup__form" name="profile">
+          <label class="popup__form-field">
+            <input
+              class="popup__input popup__input_type_name"
+              name="name"
+              type="text"
+              placeholder="Имя"
+              minlength="2"
+              maxlength="40"
+              required
+            />
+            <span
+              class="popup__input-error popup__input-error_type_name"
+            ></span>
+          </label>
+          <label class="popup__form-field">
+            <input
+              class="popup__input popup__input_type_info"
+              name="info"
+              type="text"
+              placeholder="О Себе"
+              minlength="2"
+              maxlength="200"
+              required
+            />
+            <span
+              class="popup__input-error popup__input-error_type_info"
+            ></span>
+          </label>
+          <button type="submit" class="popup__save-button">Сохранить</button>
+        </form>
+        <button class="popup__close-button" type="button"></button>
       </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p class="footer__content">&copy; 2021. Mesto World</p>
-  </footer>
-
-  <div class="popup popup_type_profile">          
-    <div class="popup__container">
-      <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form" name="profile">
-        <label class="popup__form-field">
-          <input
-            class="popup__input popup__input_type_name"
-            name="name" type="text" placeholder="Имя" minlength="2" maxlength="40" required/>
-          <span class="popup__input-error popup__input-error_type_name"></span>
-        </label>
-        <label class="popup__form-field">
-          <input
-            class="popup__input popup__input_type_info"
-            name="info" type="text" placeholder="О Себе" minlength="2" maxlength="200" required/>
-          <span class="popup__input-error popup__input-error_type_info"></span>
-        </label>
-        <button type="submit" class="popup__save-button">Сохранить</button>
-      </form>
-      <button class="popup__close-button" type="button"></button>
     </div>
-  </div>
 
-  <div class="popup popup_type_card-add">      
-    <div class="popup__container">
-      <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form" name="profile" novalidate>
-        <label class="popup__form-field">
-          <input
-            class="popup__input popup__input_type_name"
-            name="card_name" type="text" placeholder="Название" minlength="2" maxlength="30" required/>
-          <span class="popup__input-error popup__input-error_type_name"></span>
-        </label>
-        <label class="popup__form-field">
-          <input
-            class="popup__input popup__input_type_info"
-            name="link" type="url" placeholder="Ссылка на картинку" required/>
-          <span class="popup__input-error popup__input-error_type_info"></span>
-        </label>
-        <button type="submit" class="popup__save-button">Создать</button>
-      </form>
-      <button class="popup__close-button" type="button"></button>
-    </div>
-  </div>
-
-  <div class="popup popup_dimmed popup_type_picture">      
-    <figure class="popup__image-container">
-      <img class="popup__image">
-      <p class="popup__image-description">{{description}}</p>
-      <button class="popup__close-button" type="button"></button>
-    </figure>    
-  </div>
-  
-  <template class="element__template">
-    <article class="element">  
-      <img class="element__image" src="{{src}}" alt="{{alt}}"/>
-      <div class="element__description">
-        <h2 class="element__title">{{name}}</h2> 
-        <button class="element__heart" type="button"></button>
+    <div class="popup popup_type_card-add">
+      <div class="popup__container">
+        <h2 class="popup__title">Новое место</h2>
+        <form class="popup__form" name="profile" novalidate>
+          <label class="popup__form-field">
+            <input
+              class="popup__input popup__input_type_name"
+              name="card_name"
+              type="text"
+              placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              required
+            />
+            <span
+              class="popup__input-error popup__input-error_type_name"
+            ></span>
+          </label>
+          <label class="popup__form-field">
+            <input
+              class="popup__input popup__input_type_info"
+              name="link"
+              type="url"
+              placeholder="Ссылка на картинку"
+              required
+            />
+            <span
+              class="popup__input-error popup__input-error_type_info"
+            ></span>
+          </label>
+          <button type="submit" class="popup__save-button">Создать</button>
+        </form>
+        <button class="popup__close-button" type="button"></button>
       </div>
-      <img class="element__trash" src="./images/trash.svg"/>
-    </article>    
-  </template>
+    </div>
 
-  <script src="./scripts/initial-cards.js"></script>
-  <script src="./scripts/dom.js"></script>
-  <script src="./scripts/validate.js"></script>
-  <script src="./scripts/index.js"></script>  
-</body>
+    <div class="popup popup_dimmed popup_type_picture">
+      <figure class="popup__image-container">
+        <img class="popup__image" />
+        <figcaption class="popup__image-description">
+          {{description}}
+        </figcaption>
+        <button class="popup__close-button" type="button"></button>
+      </figure>
+    </div>
 
+    <template class="element__template">
+      <article class="element">
+        <img class="element__image" src="{{src}}" alt="{{alt}}" />
+        <div class="element__description">
+          <h2 class="element__title">{{name}}</h2>
+          <button class="element__heart" type="button"></button>
+        </div>
+        <img class="element__trash" src="./images/trash.svg" />
+      </article>
+    </template>
+
+    <script src="./scripts/initial-cards.js"></script>
+    <script src="./scripts/dom.js"></script>
+    <script src="./scripts/validate.js"></script>
+    <script src="./scripts/index.js"></script>
+  </body>
 </html>
