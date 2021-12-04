@@ -90,9 +90,11 @@ initialCards.forEach((card) => {
 })
 
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
-dom.profileEditButton.addEventListener('click', () =>
-  openPopup(dom.popupProfile.popup),
-)
+dom.profileEditButton.addEventListener('click', () => {
+  dom.popupProfile.inputName.value = dom.profileName.textContent
+  dom.popupProfile.inputInfo.value = dom.profileInfo.textContent
+  openPopup(dom.popupProfile.popup)
+})
 dom.popupProfile.closeButton.addEventListener('click', () =>
   closePopup(dom.popupProfile.popup),
 )
@@ -127,48 +129,12 @@ popups.forEach((popup) => {
   })
 })
 
-// пред-заполняет формы данными и включает валидацию
-function initForms() {
-  dom.popupProfile.inputName.value = dom.profileName.textContent
-  dom.popupProfile.inputInfo.value = dom.profileInfo.textContent
-
-  const validationClasses = {
-    fieldSelector: '.popup__form-field',
-    errorSelector: '.popup__input-error',
-    errorVisibleClass: 'popup__input-error_visible',
-    inputErrorClass: 'popup__input_type_error',
-    inactiveButtonClass: 'popup__save-button_disabled',
-  }
-
-  // валидация полей редактирования профиля
-  enableValidation({
-    formSelector: '.popup_type_profile .popup__form',
-    inputSelector: '.popup_type_profile .popup__input_type_name',
-    submitButtonSelector: '.popup_type_profile .popup__save-button',
-    ...validationClasses,
-  })
-
-  enableValidation({
-    formSelector: '.popup_type_profile .popup__form',
-    inputSelector: '.popup_type_profile .popup__input_type_info',
-    submitButtonSelector: '.popup_type_profile .popup__save-button',
-    ...validationClasses,
-  })
-
-  // валидация полей добавления карточки
-  enableValidation({
-    formSelector: '.popup_type_card-add .popup__form',
-    inputSelector: '.popup_type_card-add .popup__input_type_name',
-    submitButtonSelector: '.popup_type_card-add .popup__save-button',
-    ...validationClasses,
-  })
-
-  enableValidation({
-    formSelector: '.popup_type_card-add .popup__form',
-    inputSelector: '.popup_type_card-add .popup__input_type_info',
-    submitButtonSelector: '.popup_type_card-add .popup__save-button',
-    ...validationClasses,
-  })
-}
-
-initForms()
+// запускаем валидацию форм
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  errorVisibleClass: 'popup__input-error_visible',
+  inputErrorClass: 'popup__input_type_error',
+  inactiveButtonClass: 'popup__save-button_disabled',
+})

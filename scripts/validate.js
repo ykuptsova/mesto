@@ -1,10 +1,8 @@
 const hideInputError = (
   inputElement,
-  { errorVisibleClass, inputErrorClass, fieldSelector, errorSelector },
+  { errorVisibleClass, inputErrorClass, errorSelector },
 ) => {
-  const errorElement = inputElement
-    .closest(fieldSelector)
-    .querySelector(errorSelector)
+  const errorElement = inputElement.nextElementSibling
   inputElement.classList.remove(inputErrorClass)
   errorElement.classList.remove(errorVisibleClass)
   errorElement.textContent = ''
@@ -12,11 +10,9 @@ const hideInputError = (
 
 const showInputError = (
   inputElement,
-  { errorVisibleClass, inputErrorClass, fieldSelector, errorSelector },
+  { errorVisibleClass, inputErrorClass, errorSelector },
 ) => {
-  const errorElement = inputElement
-    .closest(fieldSelector)
-    .querySelector(errorSelector)
+  const errorElement = inputElement.nextElementSibling
   inputElement.classList.add(inputErrorClass)
   errorElement.classList.add(errorVisibleClass)
   errorElement.textContent = inputElement.validationMessage
