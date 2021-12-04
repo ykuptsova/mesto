@@ -7,7 +7,6 @@ const hideInputError = (inputElement, { errorClass, inputErrorClass }) => {
   errorElement.textContent = ''
 }
 
-
 const showInputError = (inputElement, { errorClass, inputErrorClass }) => {
   const errorElement = inputElement
     .closest('.popup__form-field')
@@ -17,25 +16,22 @@ const showInputError = (inputElement, { errorClass, inputErrorClass }) => {
   errorElement.textContent = inputElement.validationMessage
 }
 
-
 const checkInputValidity = (inputElement, config) => {
   if (inputElement.validity.valid) {
-    hideInputError(inputElement, config);
+    hideInputError(inputElement, config)
   } else {
-    showInputError(inputElement, config);
+    showInputError(inputElement, config)
   }
 }
 
-
 const toggleButtonState = (formElement, buttonElement, inactiveButtonClass) => {
   // проверяем валидность формы
-  const isFormValid = formElement.checkValidity();
+  const isFormValid = formElement.checkValidity()
   // если форма невалидна, то присваиваем свойству disabled кнопки значение true
-  buttonElement.disabled = !isFormValid;
+  buttonElement.disabled = !isFormValid
   // если форма невалидна, добавляем кнопке класс
   buttonElement.classList.toggle(inactiveButtonClass, !isFormValid)
 }
-
 
 const setEventListeners = (formElement, config) => {
   // разбиваем конфиг на составляющие, чтобы передать нужные свойства в функции
@@ -44,7 +40,7 @@ const setEventListeners = (formElement, config) => {
     submitButtonSelector,
     inactiveButtonClass,
     errorClass,
-    inputErrorClass
+    inputErrorClass,
   } = config
   // inputSelector позволяет найти все поля ввода
   const inputList = Array.from(formElement.querySelectorAll(inputSelector))
@@ -63,12 +59,13 @@ const setEventListeners = (formElement, config) => {
   })
 }
 
-
 const enableValidation = (config) => {
   const { formSelector, ...props } = config
   const inputList = Array.from(document.querySelectorAll(formSelector))
   inputList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => { evt.preventDefault() })
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault()
+    })
     // объект props передаём дальше, он будет содержать в себе все необходимые свойства
     setEventListeners(formElement, props)
   })

@@ -29,4 +29,4 @@ const initialCards = [
     link: './images/places/turkey-cappadocia.jpg',
     alt: 'Фестиваль воздушных шаров',
   },
-]; 
+]
