@@ -14,9 +14,7 @@ const dom = {
     closeButton: document.querySelector('.popup_type_profile .popup__close-button'),
     formElement: document.querySelector('.popup_type_profile .popup__form'),
     inputName: document.querySelector('.popup_type_profile .popup__form .popup__input_type_name'),
-    inputNameError: document.querySelector('.popup_type_profile .popup__form .popup__input-error_type_name'),
     inputInfo: document.querySelector('.popup_type_profile .popup__form .popup__input_type_info'),    
-    inputInfoError: document.querySelector('.popup_type_profile .popup__form .popup__input-error_type_info'),
   },
 
   newCardButton: document.querySelector('.profile__new-card-button'),
@@ -27,9 +25,7 @@ const dom = {
     closeButton: document.querySelector('.popup_type_card-add .popup__close-button'),
     formElement: document.querySelector('.popup_type_card-add .popup__form'),
     inputName: document.querySelector('.popup_type_card-add .popup__form .popup__input_type_name'),
-    inputNameError: document.querySelector('.popup_type_card-add .popup__form .popup__input-error_type_name'),
     inputInfo: document.querySelector('.popup_type_card-add .popup__form .popup__input_type_info'),    
-    inputInfoError: document.querySelector('.popup_type_card-add .popup__form .popup__input-error_type_info'),
   },
 
   popupPicture: {

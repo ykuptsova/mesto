@@ -62,17 +62,28 @@ function addNewCard (event) {
 }
 
 
+// слушатель закрытия попапов на нажатие Esc
+function closePopupOnEscape (event) {
+  if (event.key !== 'Escape') return
+  // находим открытый popup
+  const openedPopup = document.querySelector('.popup_opened')
+  if (openedPopup) {
+    closePopup(openedPopup)  
+  }
+}
+
+
 // открывает попап
 function openPopup (popup) {
   popup.classList.add('popup_opened')
+  document.addEventListener('keydown', closePopupOnEscape)
 }
 
 
 // закрывает заданный попап с транзицией
 function closePopup (popup) {  
-  popup.style.visibility = 'visible'
   popup.classList.remove('popup_opened')
-  setTimeout(() => popup.style.visibility = null, 500)
+  document.removeEventListener('keydown', closePopupOnEscape)
 }
 
 
@@ -84,26 +95,14 @@ initialCards.forEach((card) => {
 
 
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
-dom.profileEditButton.addEventListener('click', () => {  
-  dom.popupProfile.inputName.value = dom.profileName.textContent
-  dom.popupProfile.inputInfo.value = dom.profileInfo.textContent  
-  validate(dom.popupProfile.form, null, false)
-  openPopup(dom.popupProfile.popup)
-})
-dom.popupProfile.closeButton.addEventListener('click', () => {
-  closePopup(dom.popupProfile.popup)
-})
+dom.profileEditButton.addEventListener('click', () => openPopup(dom.popupProfile.popup))
+dom.popupProfile.closeButton.addEventListener('click', () => closePopup(dom.popupProfile.popup))
 dom.popupProfile.formElement.addEventListener('submit', handleProfileSubmit)
 
 
 // добавляем слушатели открытия и закрытия попапа добавления карточки
-dom.newCardButton.addEventListener('click', () => {
-  validate(dom.popupPlace.form, null, false)
-  openPopup(dom.popupPlace.popup)
-})
-dom.popupPlace.closeButton.addEventListener('click', () => {
-  closePopup(dom.popupPlace.popup)
-})
+dom.newCardButton.addEventListener('click', () => openPopup(dom.popupPlace.popup))
+dom.popupPlace.closeButton.addEventListener('click', () => closePopup(dom.popupPlace.popup))
 dom.popupPlace.formElement.addEventListener('submit', addNewCard)
 
 
@@ -117,20 +116,55 @@ dom.popupPicture.closeButton.addEventListener('click', () => {
 const popups = [dom.popupProfile.popup, dom.popupPlace.popup, dom.popupPicture.popup]
 popups.forEach(popup => {
   popup.addEventListener('click', (event) => {
-    // если клик был снаружи контейнера, то он был на overlay-е -> закрываем попап
-    if (event.target.closest('.popup__container')) return
-    closePopup(popup)
+    // если клик был на popup-элементе а не на внутреннем контейнере -> закрываем попап
+    if (event.target.classList.contains('popup')) {
+      closePopup(popup)
+    }
   })
 })
 
 
-// добавляем слушатель закрытия попапов на нажатие Esc
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    // находим открытый popup
-    const openedPopup = document.querySelector('.popup_opened')
-    if (openedPopup) {
-      closePopup(openedPopup)  
-    }
+// пред-заполняет формы данными и включает валидацию
+function initForms () {
+  dom.popupProfile.inputName.value = dom.profileName.textContent
+  dom.popupProfile.inputInfo.value = dom.profileInfo.textContent
+
+  const validationClasses = {
+    inactiveButtonClass: 'popup__save-button_disabled',
+    errorClass: 'popup__input-error_visible',
+    inputErrorClass: 'popup__input_type_error',
   }
-})
+
+  // валидация полей редактирования профиля
+  enableValidation({
+    formSelector: '.popup_type_profile .popup__form',
+    inputSelector: '.popup_type_profile .popup__input_type_name',
+    submitButtonSelector: '.popup_type_profile .popup__save-button',
+    ...validationClasses,
+  })
+
+  enableValidation({
+    formSelector: '.popup_type_profile .popup__form',
+    inputSelector: '.popup_type_profile .popup__input_type_info',
+    submitButtonSelector: '.popup_type_profile .popup__save-button',
+    ...validationClasses,
+  })
+
+  // валидация полей добавления карточки
+  enableValidation({
+    formSelector: '.popup_type_card-add .popup__form',
+    inputSelector: '.popup_type_card-add .popup__input_type_name',
+    submitButtonSelector: '.popup_type_card-add .popup__save-button',
+    ...validationClasses,
+  })
+
+  enableValidation({
+    formSelector: '.popup_type_card-add .popup__form',
+    inputSelector: '.popup_type_card-add .popup__input_type_info',
+    submitButtonSelector: '.popup_type_card-add .popup__save-button',
+    ...validationClasses,
+  })
+}
+
+
+initForms()
