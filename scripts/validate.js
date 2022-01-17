@@ -72,3 +72,5 @@ const enableValidation = (config) => {
     setEventListeners(formElement, props)
   })
 }
+
+export default enableValidation

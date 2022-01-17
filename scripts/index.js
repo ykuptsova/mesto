@@ -1,12 +1,33 @@
-// обработчик слушателя like карточки
-function handleLike(evt) {
-  evt.target.classList.toggle('element__heart_active')
+import dom from './dom.js'
+import initialCards from './initial-cards.js'
+import enableValidation from './validate.js'
+
+import Card from './Card.js'
+import FormValidator from './FormValidator.js'
+
+// добавляет новую карточку места
+function addNewCard(event) {
+  event.preventDefault()
+  const name = dom.popupPlace.inputName.value
+  const link = dom.popupPlace.inputInfo.value
+  const alt = `${name}, Фото`
+  const card = new Card(
+    { name, link, alt },
+    dom.elementTemplate,
+    openPopupPicture,
+  )
+  const cardElement = card.render()
+  dom.elementsContent.prepend(cardElement)
+  dom.popupPlace.formElement.reset()
+  closePopup(dom.popupPlace.popup)
 }
 
-// обработчик слушателя trash карточки
-function handleTrash(evt) {
-  const element = evt.target.closest('.element')
-  element.remove()
+// обработчик открытия попапа на клик по карточке
+function openPopupPicture(card) {
+  dom.popupPicture.description.textContent = card.name
+  dom.popupPicture.image.setAttribute('src', card.link)
+  dom.popupPicture.image.setAttribute('alt', card.alt)
+  openPopup(dom.popupPicture.popup)
 }
 
 // обработчик слушателя редактирования профиля
@@ -15,50 +36,6 @@ function handleProfileSubmit(event) {
   dom.profileName.textContent = dom.popupProfile.inputName.value
   dom.profileInfo.textContent = dom.popupProfile.inputInfo.value
   closePopup(dom.popupProfile.popup)
-}
-
-// создает элемент для заданной карточки
-function createCard(card) {
-  // клонируем template карточки
-  const element = dom.elementTemplate.content
-    .querySelector('.element')
-    .cloneNode(true)
-
-  // наполняем элемент карточки данными
-  element.querySelector('.element__title').textContent = card.name
-  const elementImage = element.querySelector('.element__image')
-  elementImage.setAttribute('src', card.link)
-  elementImage.setAttribute('alt', card.alt)
-
-  // добавляем слушатель like карточки
-  element.querySelector('.element__heart').addEventListener('click', handleLike)
-
-  // добавляем слушатель trash карточки
-  element
-    .querySelector('.element__trash')
-    .addEventListener('click', handleTrash)
-
-  // добавляем слушатель открытия попапа с картинкой
-  element.querySelector('.element__image').addEventListener('click', () => {
-    dom.popupPicture.description.textContent = card.name
-    dom.popupPicture.image.setAttribute('src', card.link)
-    dom.popupPicture.image.setAttribute('alt', card.alt)
-    openPopup(dom.popupPicture.popup)
-  })
-
-  return element
-}
-
-// добавляет новую карточку места
-function addNewCard(event) {
-  event.preventDefault()
-  const name = dom.popupPlace.inputName.value
-  const link = dom.popupPlace.inputInfo.value
-  const alt = `${name}, Фото`
-  const cardElement = createCard({ name, link, alt })
-  dom.elementsContent.prepend(cardElement)
-  dom.popupPlace.formElement.reset()
-  closePopup(dom.popupPlace.popup)
 }
 
 // слушатель закрытия попапов на нажатие Esc
@@ -84,8 +61,9 @@ function closePopup(popup) {
 }
 
 // создаем все карточки на старте
-initialCards.forEach((card) => {
-  const cardElement = createCard(card)
+initialCards.forEach((data) => {
+  const card = new Card(data, dom.elementTemplate, openPopupPicture)
+  const cardElement = card.render()
   dom.elementsContent.append(cardElement)
 })
 

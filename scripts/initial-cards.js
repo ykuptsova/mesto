@@ -30,3 +30,5 @@ const initialCards = [
     alt: 'Фестиваль воздушных шаров',
   },
 ]
+
+export default initialCards
