@@ -1,6 +1,5 @@
 import dom from './dom.js'
 import initialCards from './initial-cards.js'
-import enableValidation from './validate.js'
 
 import Card from './Card.js'
 import FormValidator from './FormValidator.js'
@@ -108,11 +107,17 @@ popups.forEach((popup) => {
 })
 
 // запускаем валидацию форм
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  errorVisibleClass: 'popup__input-error_visible',
-  inputErrorClass: 'popup__input_type_error',
-  inactiveButtonClass: 'popup__save-button_disabled',
+const inputList = Array.from(document.querySelectorAll('.popup__form'))
+inputList.forEach((formElement) => {
+  const formValidator = new FormValidator(
+    {
+      inputSelector: '.popup__input',
+      submitButtonSelector: '.popup__save-button',
+      errorVisibleClass: 'popup__input-error_visible',
+      inputErrorClass: 'popup__input_type_error',
+      inactiveButtonClass: 'popup__save-button_disabled',
+    },
+    formElement,
+  )
+  formValidator.enableValidation()
 })
