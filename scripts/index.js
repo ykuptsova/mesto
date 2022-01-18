@@ -1,4 +1,4 @@
-import dom from './dom.js'
+import selectors from './selectors.js'
 import initialCards from './initial-cards.js'
 
 import Card from './Card.js'
@@ -14,7 +14,7 @@ const {
   elementTemplate,
   profileEditButton,
   newCardButton,
-} = dom
+} = selectors
 
 // создает новую карточку
 function createCard(cardData, template, onClick) {
