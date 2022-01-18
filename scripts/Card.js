@@ -1,24 +1,29 @@
 class Card {
-  constructor(card, template, onClick) {
-    this.card = card
+  constructor(cardData, template, onClick) {
+    this.cardData = cardData
     this.template = template
     this.onClick = onClick
   }
 
   render() {
-    const card = this.card
-
     // клонируем template карточки
     const element = this.template.content
       .querySelector('.element')
       .cloneNode(true)
 
     // наполняем элемент карточки данными
-    element.querySelector('.element__title').textContent = card.name
+    element.querySelector('.element__title').textContent = this.cardData.name
     const elementImage = element.querySelector('.element__image')
-    elementImage.setAttribute('src', card.link)
-    elementImage.setAttribute('alt', card.alt)
+    elementImage.setAttribute('src', this.cardData.link)
+    elementImage.setAttribute('alt', this.cardData.alt)
 
+    // добавляем слушатели на элемент карточки
+    this._setEventListeners(element)
+
+    return element
+  }
+
+  _setEventListeners(element) {
     // добавляем слушатель like карточки
     element
       .querySelector('.element__heart')
@@ -33,8 +38,6 @@ class Card {
     element
       .querySelector('.element__image')
       .addEventListener('click', (evt) => this._handleClick(evt))
-
-    return element
   }
 
   _handleLike(evt) {
@@ -47,7 +50,7 @@ class Card {
   }
 
   _handleClick() {
-    this.onClick(this.card)
+    this.onClick(this.cardData)
   }
 }
 

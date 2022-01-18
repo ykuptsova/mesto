@@ -3,4 +3,6 @@
   border-radius: 10px;
   background-color: #fff;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }

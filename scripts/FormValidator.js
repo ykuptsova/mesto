@@ -13,9 +13,6 @@ class FormValidator {
   }
 
   _setEventListeners() {
-    const config = this.config
-    const formElement = this.formElement
-
     // разбиваем конфиг на составляющие, чтобы передать нужные свойства в функции
     const {
       inputSelector,
@@ -23,9 +20,11 @@ class FormValidator {
       inactiveButtonClass,
       errorVisibleClass,
       inputErrorClass,
-    } = config
+    } = this.config
     // inputSelector позволяет найти все поля ввода
-    const inputList = Array.from(formElement.querySelectorAll(inputSelector))
+    const inputList = Array.from(
+      this.formElement.querySelectorAll(inputSelector),
+    )
     // inactiveButtonClass навашивается на кнопку формы, если она неактивна.
     //   эту функцию вызываем здесь, чтобы сделать кнопку неактивной при открытии страницы.
     //   иначе кнопка будет активной до первого ввода в поля формы.
