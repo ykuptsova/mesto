@@ -12,6 +12,15 @@ class FormValidator {
     this._setEventListeners()
   }
 
+  disableSubmitButton() {
+    // с помощью submitButtonSelector находим кнопку отправки формы
+    const buttonElement = this.formElement.querySelector(
+      this.config.submitButtonSelector,
+    )
+    // отключаем кнопку submit
+    buttonElement.classList.add(this.config.inactiveButtonClass)
+  }
+
   _setEventListeners() {
     // разбиваем конфиг на составляющие, чтобы передать нужные свойства в функции
     const {

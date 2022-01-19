@@ -1,20 +1,46 @@
-import selectors from './selectors.js'
+import {
+  elementTemplate,
+  elementsContent,
+  profileName,
+  profileInfo,
+  profileEditButton,
+  popupProfile,
+  popupProfileForm,
+  popupProfileSubmitButton,
+  popupProfileCloseButton,
+  popupProfileInputName,
+  popupProfileInputInfo,
+  newCardButton,
+  popupPlace,
+  popupPlaceForm,
+  popupPlaceSubmitButton,
+  popupPlaceCloseButton,
+  popupPlaceInputName,
+  popupPlaceInputInfo,
+  popupPicture,
+  popupPictureImage,
+  popupPictureDescription,
+  popupPictureCloseButton,
+} from './elements.js'
 import initialCards from './initial-cards.js'
 
 import Card from './Card.js'
 import FormValidator from './FormValidator.js'
 
-const {
-  popupPlace,
-  popupProfile,
-  elementsContent,
-  popupPicture,
-  profileName,
-  profileInfo,
-  elementTemplate,
-  profileEditButton,
-  newCardButton,
-} = selectors
+// инициализируем валидаторы
+const validatorConfig = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  errorVisibleClass: 'popup__input-error_visible',
+  inputErrorClass: 'popup__input_type_error',
+  inactiveButtonClass: 'popup__save-button_disabled',
+}
+
+const addCardFormValidator = new FormValidator(validatorConfig, popupPlaceForm)
+const editProfileFormValidator = new FormValidator(
+  validatorConfig,
+  popupProfileForm,
+)
 
 // создает новую карточку
 function createCard(cardData, template, onClick) {
@@ -24,8 +50,8 @@ function createCard(cardData, template, onClick) {
 // добавляет новую карточку места
 function addNewCard(event) {
   event.preventDefault()
-  const name = popupPlace.inputName.value
-  const link = popupPlace.inputInfo.value
+  const name = popupPlaceInputName.value
+  const link = popupPlaceInputInfo.value
   const alt = `${name}, Фото`
   const card = createCard(
     { name, link, alt },
@@ -34,25 +60,25 @@ function addNewCard(event) {
   )
   const cardElement = card.render()
   elementsContent.prepend(cardElement)
-  popupPlace.formElement.reset()
-  popupPlace.submitButton.classList.add('popup__save-button_disabled')
-  closePopup(popupPlace.popup)
+  popupPlaceForm.reset()
+  addCardFormValidator.disableSubmitButton()
+  closePopup(popupPlace)
 }
 
 // обработчик открытия попапа на клик по карточке
 function openPopupPicture(card) {
-  popupPicture.description.textContent = card.name
-  popupPicture.image.setAttribute('src', card.link)
-  popupPicture.image.setAttribute('alt', card.alt)
-  openPopup(popupPicture.popup)
+  popupPictureDescription.textContent = card.name
+  popupPictureImage.setAttribute('src', card.link)
+  popupPictureImage.setAttribute('alt', card.alt)
+  openPopup(popupPicture)
 }
 
 // обработчик слушателя редактирования профиля
 function handleProfileSubmit(event) {
   event.preventDefault()
-  profileName.textContent = popupProfile.inputName.value
-  profileInfo.textContent = popupProfile.inputInfo.value
-  closePopup(popupProfile.popup)
+  profileName.textContent = popupProfileInputName.value
+  profileInfo.textContent = popupProfileInputInfo.value
+  closePopup(popupProfile)
 }
 
 // слушатель закрытия попапов на нажатие Esc
@@ -86,29 +112,27 @@ initialCards.forEach((data) => {
 
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
 profileEditButton.addEventListener('click', () => {
-  popupProfile.inputName.value = profileName.textContent
-  popupProfile.inputInfo.value = profileInfo.textContent
-  openPopup(popupProfile.popup)
+  popupProfileInputName.value = profileName.textContent
+  popupProfileInputInfo.value = profileInfo.textContent
+  openPopup(popupProfile)
 })
-popupProfile.closeButton.addEventListener('click', () =>
-  closePopup(popupProfile.popup),
+popupProfileCloseButton.addEventListener('click', () =>
+  closePopup(popupProfile),
 )
-popupProfile.formElement.addEventListener('submit', handleProfileSubmit)
+popupProfileForm.addEventListener('submit', handleProfileSubmit)
 
 // добавляем слушатели открытия и закрытия попапа добавления карточки
-newCardButton.addEventListener('click', () => openPopup(popupPlace.popup))
-popupPlace.closeButton.addEventListener('click', () =>
-  closePopup(popupPlace.popup),
-)
-popupPlace.formElement.addEventListener('submit', addNewCard)
+newCardButton.addEventListener('click', () => openPopup(popupPlace))
+popupPlaceCloseButton.addEventListener('click', () => closePopup(popupPlace))
+popupPlaceForm.addEventListener('submit', addNewCard)
 
 // добавляем слушатели закрытия попапа с полноэкранной картинкой
-popupPicture.closeButton.addEventListener('click', () => {
-  closePopup(popupPicture.popup)
+popupPictureCloseButton.addEventListener('click', () => {
+  closePopup(popupPicture)
 })
 
 // добавляем слушатель закрытия попапа по клику на overlay
-const popups = [popupProfile.popup, popupPlace.popup, popupPicture.popup]
+const popups = [popupProfile, popupPlace, popupPicture]
 popups.forEach((popup) => {
   popup.addEventListener('click', (event) => {
     // если клик был на popup-элементе а не на внутреннем контейнере -> закрываем попап
@@ -119,22 +143,5 @@ popups.forEach((popup) => {
 })
 
 // запускаем валидацию форм
-const validatorConfig = {
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  errorVisibleClass: 'popup__input-error_visible',
-  inputErrorClass: 'popup__input_type_error',
-  inactiveButtonClass: 'popup__save-button_disabled',
-}
-
-const addCardFormValidator = new FormValidator(
-  validatorConfig,
-  document.querySelector('.popup__form[name="card-add"]'),
-)
 addCardFormValidator.enableValidation()
-
-const editProfileFormValidator = new FormValidator(
-  validatorConfig,
-  document.querySelector('.popup__form[name="profile"]'),
-)
 editProfileFormValidator.enableValidation()
