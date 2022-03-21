@@ -25,6 +25,7 @@ import {
 import initialCards from './initial-cards.js'
 
 import Card from './Card.js'
+import Section from './Section.js'
 import FormValidator from './FormValidator.js'
 
 // инициализируем валидаторы
@@ -47,22 +48,10 @@ function createCard(cardData, template, onClick) {
   return new Card(cardData, template, onClick)
 }
 
-// добавляет новую карточку места
-function addNewCard(event) {
-  event.preventDefault()
-  const name = popupPlaceInputName.value
-  const link = popupPlaceInputInfo.value
-  const alt = `${name}, Фото`
-  const card = createCard(
-    { name, link, alt },
-    elementTemplate,
-    openPopupPicture,
-  )
-  const cardElement = card.render()
-  elementsContent.prepend(cardElement)
-  popupPlaceForm.reset()
-  addCardFormValidator.disableSubmitButton()
-  closePopup(popupPlace)
+// создает DOM-элемент карточки
+function renderCard(data) {
+  const card = createCard(data, elementTemplate, openPopupPicture)
+  return card.render()
 }
 
 // обработчик открытия попапа на клик по карточке
@@ -103,12 +92,26 @@ function closePopup(popup) {
   document.removeEventListener('keydown', closePopupOnEscape)
 }
 
-// создаем все карточки на старте
-initialCards.forEach((data) => {
-  const card = createCard(data, elementTemplate, openPopupPicture)
-  const cardElement = card.render()
-  elementsContent.append(cardElement)
-})
+// создаем и рендерим секцию для карточек
+const cardsSection = new Section(
+  { items: initialCards, renderer: renderCard },
+  '.elements__content',
+)
+cardsSection.render()
+
+// добавляет новую карточку места
+function addNewCard(event) {
+  event.preventDefault()
+  const name = popupPlaceInputName.value
+  const link = popupPlaceInputInfo.value
+  const alt = `${name}, Фото`
+
+  cardsSection.addItem({ name, link, alt })
+
+  popupPlaceForm.reset()
+  addCardFormValidator.disableSubmitButton()
+  closePopup(popupPlace)
+}
 
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
 profileEditButton.addEventListener('click', () => {
