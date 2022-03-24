@@ -9,22 +9,28 @@ import {
   newCardButton,
   popupPlaceForm,
   popupPlaceSubmitButton,
-  popupPlaceInputName,
-  popupPlaceInputInfo,
-  popupPictureImage,
-  popupPictureDescription,
 } from './elements.js'
 import initialCards from './initial-cards.js'
 
 import Card from './Card.js'
 import Section from './Section.js'
-import Popup from './Popup.js'
+import PopupWithImage from './PopupWithImage.js'
+import PopupWithForm from './PopupWithForm.js'
 import FormValidator from './FormValidator.js'
 
 // инициализируем попапы
-const popupProfile = new Popup('.popup_type_profile')
-const popupPlace = new Popup('.popup_type_card-add')
-const popupPicture = new Popup('.popup_type_picture')
+const popupProfile = new PopupWithForm('.popup_type_profile', (data) => {
+  profileName.textContent = data.get('name')
+  profileInfo.textContent = data.get('info')
+})
+const popupPlace = new PopupWithForm('.popup_type_card-add', (data) => {
+  const name = data.get('card_name')
+  const link = data.get('link')
+  const alt = `${name}, Фото`
+  cardsSection.addItem({ name, link, alt })
+  addCardFormValidator.disableSubmitButton()
+})
+const popupPicture = new PopupWithImage('.popup_type_picture')
 ;[popupProfile, popupPlace, popupPicture].forEach((popup) => {
   popup.setEventListeners()
 })
@@ -57,18 +63,7 @@ function renderCard(data) {
 
 // обработчик открытия попапа на клик по карточке
 function openPopupPicture(card) {
-  popupPictureDescription.textContent = card.name
-  popupPictureImage.setAttribute('src', card.link)
-  popupPictureImage.setAttribute('alt', card.alt)
-  popupPicture.open()
-}
-
-// обработчик слушателя редактирования профиля
-function handleProfileSubmit(event) {
-  event.preventDefault()
-  profileName.textContent = popupProfileInputName.value
-  profileInfo.textContent = popupProfileInputInfo.value
-  popupProfile.close()
+  popupPicture.open(card)
 }
 
 // создаем и рендерим секцию для карточек
@@ -78,31 +73,15 @@ const cardsSection = new Section(
 )
 cardsSection.render()
 
-// добавляет новую карточку места
-function addNewCard(event) {
-  event.preventDefault()
-  const name = popupPlaceInputName.value
-  const link = popupPlaceInputInfo.value
-  const alt = `${name}, Фото`
-
-  cardsSection.addItem({ name, link, alt })
-
-  popupPlaceForm.reset()
-  addCardFormValidator.disableSubmitButton()
-  popupPlace.close()
-}
-
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
 profileEditButton.addEventListener('click', () => {
   popupProfileInputName.value = profileName.textContent
   popupProfileInputInfo.value = profileInfo.textContent
   popupProfile.open()
 })
-popupProfileForm.addEventListener('submit', handleProfileSubmit)
 
 // добавляем слушатели открытия и закрытия попапа добавления карточки
 newCardButton.addEventListener('click', () => popupPlace.open())
-popupPlaceForm.addEventListener('submit', addNewCard)
 
 // запускаем валидацию форм
 addCardFormValidator.enableValidation()

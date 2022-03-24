@@ -23,16 +23,6 @@ export const popupPlaceForm = popupPlace.querySelector('.popup__form')
 export const popupPlaceSubmitButton = popupPlace.querySelector(
   '.popup__save-button',
 )
-export const popupPlaceInputName = popupPlaceForm.querySelector(
-  '.popup__input_type_name',
-)
-export const popupPlaceInputInfo = popupPlaceForm.querySelector(
-  '.popup__input_type_info',
-)
 
 // попап картинки места
 export const popupPicture = document.querySelector('.popup_type_picture')
-export const popupPictureImage = popupPicture.querySelector('.popup__image')
-export const popupPictureDescription = popupPicture.querySelector(
-  '.popup__image-description',
-)
