@@ -1,8 +1,8 @@
 class Card {
-  constructor(cardData, template, onClick) {
+  constructor(cardData, template, handleCardClick) {
     this.cardData = cardData
     this.template = template
-    this.onClick = onClick
+    this.handleCardClick = handleCardClick
   }
 
   render() {
@@ -50,7 +50,7 @@ class Card {
   }
 
   _handleClick() {
-    this.onClick(this.cardData)
+    this.handleCardClick(this.cardData)
   }
 }
 
