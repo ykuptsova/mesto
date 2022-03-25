@@ -1,7 +1,5 @@
 import {
   elementTemplate,
-  profileName,
-  profileInfo,
   profileEditButton,
   popupProfileForm,
   popupProfileInputName,
@@ -17,11 +15,17 @@ import Section from './Section.js'
 import PopupWithImage from './PopupWithImage.js'
 import PopupWithForm from './PopupWithForm.js'
 import FormValidator from './FormValidator.js'
+import UserInfo from './UserInfo.js'
+
+// инициализируем данные пользователя
+const userInfo = new UserInfo({
+  name: '.profile__name',
+  info: '.profile__info',
+})
 
 // инициализируем попапы
 const popupProfile = new PopupWithForm('.popup_type_profile', (data) => {
-  profileName.textContent = data.get('name')
-  profileInfo.textContent = data.get('info')
+  userInfo.setUserInfo(data)
 })
 const popupPlace = new PopupWithForm('.popup_type_card-add', (data) => {
   const name = data.get('card_name')
@@ -75,8 +79,9 @@ cardsSection.render()
 
 // добавляем слушатели открытия и закрытия попапа редактирования профиля
 profileEditButton.addEventListener('click', () => {
-  popupProfileInputName.value = profileName.textContent
-  popupProfileInputInfo.value = profileInfo.textContent
+  const data = userInfo.getUserInfo()
+  popupProfileInputName.value = data.name
+  popupProfileInputInfo.value = data.info
   popupProfile.open()
 })
 

@@ -1,10 +1,6 @@
 // элементы карточки
 export const elementTemplate = document.querySelector('.element__template')
 
-// элементы панели профиля
-export const profileName = document.querySelector('.profile__name')
-export const profileInfo = document.querySelector('.profile__info')
-
 // попап профиля
 export const profileEditButton = document.querySelector('.profile__edit-button')
 export const popupProfile = document.querySelector('.popup_type_profile')
