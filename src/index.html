@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
     <title>Место</title>
   </head>
 
@@ -11,7 +10,7 @@
     <header class="header">
       <img
         class="header__logo"
-        src="./images/logo.svg"
+        src="<%=require('./images/logo.svg')%>"
         alt="Лого Проекта Место"
       />
     </header>
@@ -21,7 +20,7 @@
         <div class="profile__content">
           <img
             class="profile__pic"
-            src="./images/profile.jpeg"
+            src="<%=require('./images/profile.jpeg')%>"
             alt="Фото Профиля"
           />
           <div class="profile__texts">
@@ -142,10 +141,8 @@
           <h2 class="element__title">{{name}}</h2>
           <button class="element__heart" type="button"></button>
         </div>
-        <img class="element__trash" src="./images/trash.svg" />
+        <img class="element__trash" src="<%=require('./images/trash.svg')%>" />
       </article>
     </template>
-
-    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>

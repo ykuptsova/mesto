@@ -1,3 +1,5 @@
+import './index.css'
+
 import {
   elementTemplate,
   profileEditButton,
@@ -7,15 +9,15 @@ import {
   newCardButton,
   popupPlaceForm,
   popupPlaceSubmitButton,
-} from './elements.js'
-import initialCards from './initial-cards.js'
+} from '../data/elements.js'
+import initialCards from '../data/initial-cards.js'
 
-import Card from './Card.js'
-import Section from './Section.js'
-import PopupWithImage from './PopupWithImage.js'
-import PopupWithForm from './PopupWithForm.js'
-import FormValidator from './FormValidator.js'
-import UserInfo from './UserInfo.js'
+import Card from '../components/Card.js'
+import Section from '../components/Section.js'
+import PopupWithImage from '../components/PopupWithImage.js'
+import PopupWithForm from '../components/PopupWithForm.js'
+import FormValidator from '../components/FormValidator.js'
+import UserInfo from '../components/UserInfo.js'
 
 // инициализируем данные пользователя
 const userInfo = new UserInfo({
@@ -47,7 +49,6 @@ const validatorConfig = {
   inputErrorClass: 'popup__input_type_error',
   inactiveButtonClass: 'popup__save-button_disabled',
 }
-
 const addCardFormValidator = new FormValidator(validatorConfig, popupPlaceForm)
 const editProfileFormValidator = new FormValidator(
   validatorConfig,
