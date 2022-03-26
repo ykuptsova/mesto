@@ -1,18 +1,17 @@
 class Popup {
   constructor(selector) {
-    this.selector = selector
+    this.popup = document.querySelector(selector)
+    this.popupCloseButton = this.popup.querySelector('.popup__close-button')
     this._handleEscClose = this._handleEscClose.bind(this)
   }
 
   open() {
-    const popup = document.querySelector(this.selector)
-    popup.classList.add('popup_opened')
+    this.popup.classList.add('popup_opened')
     document.addEventListener('keydown', this._handleEscClose)
   }
 
   close() {
-    const popup = document.querySelector(this.selector)
-    popup.classList.remove('popup_opened')
+    this.popup.classList.remove('popup_opened')
     document.removeEventListener('keydown', this._handleEscClose)
   }
 
@@ -23,16 +22,14 @@ class Popup {
   }
 
   setEventListeners() {
-    const popup = document.querySelector(this.selector)
     // если клик был на popup-элементе а не на внутреннем контейнере -> закрываем попап
-    popup.addEventListener('click', () => {
+    this.popup.addEventListener('click', () => {
       if (event.target.classList.contains('popup')) {
         this.close()
       }
     })
     // добавляем слушатель закрытия попапа по клику на крестике
-    const popupCloseButton = popup.querySelector('.popup__close-button')
-    popupCloseButton.addEventListener('click', () => this.close())
+    this.popupCloseButton.addEventListener('click', () => this.close())
   }
 }
 

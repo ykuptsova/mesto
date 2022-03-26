@@ -30,8 +30,8 @@ const popupProfile = new PopupWithForm('.popup_type_profile', (data) => {
   userInfo.setUserInfo(data)
 })
 const popupPlace = new PopupWithForm('.popup_type_card-add', (data) => {
-  const name = data.get('card_name')
-  const link = data.get('link')
+  const name = data.card_name
+  const link = data.link
   const alt = `${name}, Фото`
   cardsSection.addItem({ name, link, alt })
   addCardFormValidator.disableSubmitButton()
@@ -83,11 +83,15 @@ profileEditButton.addEventListener('click', () => {
   const data = userInfo.getUserInfo()
   popupProfileInputName.value = data.name
   popupProfileInputInfo.value = data.info
+  editProfileFormValidator.clearValidationErrors()
   popupProfile.open()
 })
 
 // добавляем слушатели открытия и закрытия попапа добавления карточки
-newCardButton.addEventListener('click', () => popupPlace.open())
+newCardButton.addEventListener('click', () => {
+  addCardFormValidator.clearValidationErrors()
+  popupPlace.open()
+})
 
 // запускаем валидацию форм
 addCardFormValidator.enableValidation()

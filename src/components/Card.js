@@ -3,13 +3,12 @@ class Card {
     this.cardData = cardData
     this.template = template
     this.handleCardClick = handleCardClick
+    this.cardTemplate = this.template.content.querySelector('.element')
   }
 
   render() {
     // клонируем template карточки
-    const element = this.template.content
-      .querySelector('.element')
-      .cloneNode(true)
+    const element = this.cardTemplate.cloneNode(true)
 
     // наполняем элемент карточки данными
     element.querySelector('.element__title').textContent = this.cardData.name
