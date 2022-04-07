@@ -1,4 +1,5 @@
 import api from '../data/api.js'
+import PopupWithConfirm from '../components/PopupWithConfirm.js'
 
 class Card {
   constructor(cardData, template, handleCardClick) {
@@ -57,12 +58,19 @@ class Card {
   }
 
   _handleTrash(evt) {
-    const element = evt.target.closest('.element')
-    const id = element.getAttribute('data-card-id')
-    if (!id) return
-    api.deleteCard(id).then(() => {
-      element.remove()
-    })
+    const popupConfirmTrash = new PopupWithConfirm(
+      '.popup_type_confirm-trash',
+      () => {
+        const element = evt.target.closest('.element')
+        const id = element.getAttribute('data-card-id')
+        if (!id) return
+        api.deleteCard(id).then(() => {
+          element.remove()
+        })
+      },
+    )
+    popupConfirmTrash.setEventListeners()
+    popupConfirmTrash.open()
   }
 
   _handleClick() {
