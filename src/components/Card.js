@@ -1,3 +1,5 @@
+import api from '../data/api.js'
+
 class Card {
   constructor(cardData, template, handleCardClick) {
     this.cardData = cardData
@@ -11,10 +13,19 @@ class Card {
     const element = this.cardTemplate.cloneNode(true)
 
     // наполняем элемент карточки данными
-    element.querySelector('.element__title').textContent = this.cardData.name
+    element.setAttribute('data-card-id', this.cardData._id)
+
+    const elementTitle = element.querySelector('.element__title')
+    elementTitle.textContent = this.cardData.name
+
     const elementImage = element.querySelector('.element__image')
     elementImage.setAttribute('src', this.cardData.link)
     elementImage.setAttribute('alt', this.cardData.alt)
+
+    const elementTrash = element.querySelector('.element__trash')
+    if (!this.cardData.owned) {
+      elementTrash.remove()
+    }
 
     // добавляем слушатели на элемент карточки
     this._setEventListeners(element)
@@ -28,15 +39,17 @@ class Card {
       .querySelector('.element__heart')
       .addEventListener('click', (evt) => this._handleLike(evt))
 
-    // добавляем слушатель trash карточки
-    element
-      .querySelector('.element__trash')
-      .addEventListener('click', (evt) => this._handleTrash(evt))
-
     // добавляем слушатель открытия попапа с картинкой
     element
       .querySelector('.element__image')
       .addEventListener('click', (evt) => this._handleClick(evt))
+
+    // добавляем слушатель trash карточки
+    if (this.cardData.owned) {
+      element
+        .querySelector('.element__trash')
+        .addEventListener('click', (evt) => this._handleTrash(evt))
+    }
   }
 
   _handleLike(evt) {
@@ -45,7 +58,11 @@ class Card {
 
   _handleTrash(evt) {
     const element = evt.target.closest('.element')
-    element.remove()
+    const id = element.getAttribute('data-card-id')
+    if (!id) return
+    api.deleteCard(id).then(() => {
+      element.remove()
+    })
   }
 
   _handleClick() {

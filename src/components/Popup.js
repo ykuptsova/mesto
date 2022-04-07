@@ -3,6 +3,7 @@ class Popup {
     this.popup = document.querySelector(selector)
     this.popupCloseButton = this.popup.querySelector('.popup__close-button')
     this._handleEscClose = this._handleEscClose.bind(this)
+    setTimeout(() => this.popup.classList.add('popup_initialized'))
   }
 
   open() {

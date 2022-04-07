@@ -6,4 +6,6 @@
   flex-shrink: 0;
 }
 
-
+.profile__pic[src=''] {
+  visibility: hidden;
+}

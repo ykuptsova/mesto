@@ -1,4 +1,5 @@
 .profile__edit-button {
+  visibility: hidden;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -6,7 +7,11 @@
   transition: opacity 300ms;
   margin-left: 18px;
   border: none;
-  background: center/24px url('../../../images/edit-button.svg');  
+  background: center/24px url('../../../images/edit-button.svg');
+}
+
+.profile__edit-button_enabled {
+  visibility: visible;
 }
 
 .profile__edit-button:hover {
@@ -17,10 +22,9 @@
   .profile__edit-button {
     position: absolute;
     bottom: 24px;
-    right: -42px; 
+    right: -42px;
   }
-} 
-
+}
 
 @media (max-width: 335px) {
   .profile__edit-button {
@@ -30,4 +34,4 @@
     right: -28px;
     background: center/18px url('../../../images/edit-button.svg');
   }
-} 
+}
