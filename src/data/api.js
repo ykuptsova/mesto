@@ -26,12 +26,20 @@ class Api {
     }
     return fetch(this._url('users/me'), this._init(config))
       .then(this._handleResponse)
-      .then((userInfo) => ({
-        _id: userInfo._id,
-        name: userInfo.name,
-        info: userInfo.about,
-        avatar: userInfo.avatar,
-      }))
+      .then((userInfo) => this._toUserInfo(userInfo))
+      .catch(this._handleError)
+  }
+
+  setUserAvatar(data) {
+    const config = {
+      method: 'PATCH',
+      body: JSON.stringify({
+        avatar: data.avatar,
+      }),
+    }
+    return fetch(this._url('users/me/avatar'), this._init(config))
+      .then(this._handleResponse)
+      .then((userInfo) => this._toUserInfo(userInfo))
       .catch(this._handleError)
   }
 
@@ -39,16 +47,7 @@ class Api {
   getInitialCards(userId) {
     return fetch(this._url('cards'), this._init())
       .then(this._handleResponse)
-      .then((cards) =>
-        cards.map((card) => ({
-          _id: card._id,
-          name: card.name,
-          link: card.link,
-          alt: `${card.name} by ${card.owner.name}`,
-          owned: card.owner._id === userId,
-          likes: card.likes.length,
-        })),
-      )
+      .then((cards) => cards.map((card) => this._toCard(card, userId)))
       .catch(this._handleError)
   }
 
@@ -62,14 +61,7 @@ class Api {
     }
     return fetch(this._url('cards'), this._init(config))
       .then(this._handleResponse)
-      .then((card) => ({
-        _id: card._id,
-        name: card.name,
-        link: card.link,
-        alt: `${card.name} by ${card.owner.name}`,
-        owned: true,
-        likes: card.likes.length,
-      }))
+      .then((card) => this._toCard(card, card.owner._id))
       .catch(this._handleError)
   }
 
@@ -83,9 +75,25 @@ class Api {
   }
 
   // --- работа с лайками
-  likeCard(id) {}
+  likeCard(id, userId) {
+    const config = {
+      method: 'PUT',
+    }
+    return fetch(this._url(`cards/${id}/likes`), this._init(config))
+      .then(this._handleResponse)
+      .then((card) => this._toCard(card, userId))
+      .catch(this._handleError)
+  }
 
-  unlikeCard(id) {}
+  unlikeCard(id, userId) {
+    const config = {
+      method: 'DELETE',
+    }
+    return fetch(this._url(`cards/${id}/likes`), this._init(config))
+      .then(this._handleResponse)
+      .then((card) => this._toCard(card, userId))
+      .catch(this._handleError)
+  }
 
   // --- вспомогательные приватные методы
   _url(path) {
@@ -96,6 +104,27 @@ class Api {
     return {
       headers: this.options.headers,
       ...config,
+    }
+  }
+
+  _toCard(card, userId) {
+    return {
+      _id: card._id,
+      name: card.name,
+      link: card.link,
+      alt: `${card.name} by ${card.owner.name}`,
+      likes: card.likes.length,
+      liked: card.likes.some((user) => user._id === userId),
+      owned: card.owner._id === userId,
+    }
+  }
+
+  _toUserInfo(userInfo) {
+    return {
+      _id: userInfo._id,
+      name: userInfo.name,
+      info: userInfo.about,
+      avatar: userInfo.avatar,
     }
   }
 

@@ -26,6 +26,8 @@
 @import url(../blocks/profile/__new-card-button/profile__new-card-button.css);
 @import url(../blocks/profile/__plus/profile__plus.css);
 @import url(../blocks/profile/__pic/profile__pic.css);
+@import url(../blocks/profile/__pic-container/profile__pic-container.css);
+@import url(../blocks/profile/__pencil/profile__pencil.css);
 @import url(../blocks/profile/__texts/profile__texts.css);
 @import url(../blocks/profile/__edit-button/profile__edit-button.css);
 @import url(../blocks/profile/__name-container/profile__name-container.css);

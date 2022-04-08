@@ -4,6 +4,7 @@
   border-radius: 100px;
   object-fit: cover;
   flex-shrink: 0;
+  transition: filter 300ms;
 }
 
 .profile__pic[src=''] {

@@ -5,39 +5,57 @@ const popupConfirmTrash = new PopupWithConfirm('.popup_type_confirm-trash')
 popupConfirmTrash.setEventListeners()
 
 class Card {
-  constructor(cardData, template, handleCardClick) {
+  constructor(userId, cardData, template, handleCardClick) {
+    this.userId = userId
     this.cardData = cardData
     this.template = template
     this.handleCardClick = handleCardClick
     this.cardTemplate = this.template.content.querySelector('.element')
+    this.element = null
   }
 
   render() {
     // клонируем template карточки
-    const element = this.cardTemplate.cloneNode(true)
+    const isCreated = Boolean(this.element)
+    if (!isCreated) {
+      this.element = this.cardTemplate.cloneNode(true)
+    }
 
     // наполняем элемент карточки данными
-    element.setAttribute('data-card-id', this.cardData._id)
+    this.element.setAttribute('data-card-id', this.cardData._id)
 
-    const elementTitle = element.querySelector('.element__title')
+    const elementTitle = this.element.querySelector('.element__title')
     elementTitle.textContent = this.cardData.name
 
-    const elementImage = element.querySelector('.element__image')
+    const elementImage = this.element.querySelector('.element__image')
     elementImage.setAttribute('src', this.cardData.link)
     elementImage.setAttribute('alt', this.cardData.alt)
 
-    const elementLikeCounter = element.querySelector('.element__like_counter')
+    const elementHeart = this.element.querySelector('.element__heart')
+    if (this.cardData.liked) {
+      elementHeart.classList.add('element__heart_active')
+    } else {
+      elementHeart.classList.remove('element__heart_active')
+    }
+
+    const elementLikeCounter = this.element.querySelector(
+      '.element__like_counter',
+    )
     elementLikeCounter.textContent = this.cardData.likes
 
-    const elementTrash = element.querySelector('.element__trash')
-    if (!this.cardData.owned) {
-      elementTrash.remove()
+    const elementTrash = this.element.querySelector('.element__trash')
+    if (this.cardData.owned) {
+      elementTrash.classList.add('element__trash_active')
+    } else {
+      elementTrash.classList.remove('element__trash_active')
     }
 
     // добавляем слушатели на элемент карточки
-    this._setEventListeners(element)
+    if (!isCreated) {
+      this._setEventListeners(this.element)
+    }
 
-    return element
+    return this.element
   }
 
   _setEventListeners(element) {
@@ -60,7 +78,19 @@ class Card {
   }
 
   _handleLike(evt) {
-    evt.target.classList.toggle('element__heart_active')
+    if (this.cardData.liked) {
+      api.unlikeCard(this.cardData._id, this.userId).then((card) => {
+        if (!card) return
+        this.cardData = card
+        this.render()
+      })
+    } else {
+      api.likeCard(this.cardData._id, this.userId).then((card) => {
+        if (!card) return
+        this.cardData = card
+        this.render()
+      })
+    }
   }
 
   _handleTrash(evt) {

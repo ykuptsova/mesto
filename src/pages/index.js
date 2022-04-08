@@ -2,12 +2,15 @@ import './index.css'
 
 import {
   elementTemplate,
+  profilePicButton,
   profileEditButton,
+  popupPicInputAvatar,
   popupProfileForm,
   popupProfileInputName,
   popupProfileInputInfo,
   newCardButton,
   popupPlaceForm,
+  popupPicForm,
   popupPlaceSubmitButton,
 } from '../data/elements.js'
 import api from '../data/api.js'
@@ -52,7 +55,7 @@ function renderCard(data) {
 }
 
 function createCard(cardData, template, onClick) {
-  return new Card(cardData, template, onClick)
+  return new Card(userId, cardData, template, onClick)
 }
 
 function openPopupPicture(card) {
@@ -60,7 +63,14 @@ function openPopupPicture(card) {
 }
 
 // --- работа с попапами
+const popupPic = new PopupWithForm('.popup_type_pic', (data) => {
+  return api.setUserAvatar(data).then((data) => {
+    if (!data) return
+    userInfo.setUserInfo(data)
+  })
+})
 const popupProfile = new PopupWithForm('.popup_type_profile', (data) => {
+  if (!data) return
   return api.setUserInfo(data).then((data) => userInfo.setUserInfo(data))
 })
 const popupPlace = new PopupWithForm('.popup_type_card-add', (data) => {
@@ -74,8 +84,15 @@ const popupPlace = new PopupWithForm('.popup_type_card-add', (data) => {
   })
 })
 const popupPicture = new PopupWithImage('.popup_type_picture')
-;[popupProfile, popupPlace, popupPicture].forEach((popup) => {
+;[popupPic, popupProfile, popupPlace, popupPicture].forEach((popup) => {
   popup.setEventListeners()
+})
+
+profilePicButton.addEventListener('click', () => {
+  const data = userInfo.getUserInfo()
+  popupPicInputAvatar.value = data.avatar
+  // editProfileFormValidator.clearValidationErrors()
+  popupPic.open()
 })
 
 profileEditButton.addEventListener('click', () => {
@@ -100,10 +117,12 @@ const validatorConfig = {
   inactiveButtonClass: 'popup__save-button_disabled',
 }
 const addCardFormValidator = new FormValidator(validatorConfig, popupPlaceForm)
+const editAvatarFormValidator = new FormValidator(validatorConfig, popupPicForm)
 const editProfileFormValidator = new FormValidator(
   validatorConfig,
   popupProfileForm,
 )
 
 addCardFormValidator.enableValidation()
+editAvatarFormValidator.enableValidation()
 editProfileFormValidator.enableValidation()

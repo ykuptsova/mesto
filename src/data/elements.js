@@ -1,8 +1,18 @@
+// элементы профиля
+export const profilePicButton = document.querySelector(
+  '.profile__pic-container',
+)
+export const popupPicInputAvatar = document.querySelector(
+  '.popup__input_type_pic',
+)
+export const popupPic = document.querySelector('.popup_type_pic')
+export const popupPicForm = popupPic.querySelector('.popup__form')
+export const profileEditButton = document.querySelector('.profile__edit-button')
+
 // элементы карточки
 export const elementTemplate = document.querySelector('.element__template')
 
 // попап профиля
-export const profileEditButton = document.querySelector('.profile__edit-button')
 export const popupProfile = document.querySelector('.popup_type_profile')
 export const popupProfileForm = popupProfile.querySelector('.popup__form')
 export const popupProfileInputName = popupProfileForm.querySelector(
