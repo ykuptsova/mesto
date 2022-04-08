@@ -12,9 +12,13 @@ class PopupWithForm extends Popup {
     // добавляем обработчик сабмита формы
     this.form.addEventListener('submit', () => {
       event.preventDefault()
+      const saveButton = this.form.querySelector('.popup__save-button')
+      saveButton.textContent = 'Сохранение...'
       const data = this._getInputValues()
-      this.submitCallback(data)
-      super.close()
+      this.submitCallback(data).finally(() => {
+        saveButton.textContent = 'Сохранить'
+        super.close()
+      })
     })
   }
 

@@ -1,6 +1,9 @@
 import api from '../data/api.js'
 import PopupWithConfirm from '../components/PopupWithConfirm.js'
 
+const popupConfirmTrash = new PopupWithConfirm('.popup_type_confirm-trash')
+popupConfirmTrash.setEventListeners()
+
 class Card {
   constructor(cardData, template, handleCardClick) {
     this.cardData = cardData
@@ -22,6 +25,9 @@ class Card {
     const elementImage = element.querySelector('.element__image')
     elementImage.setAttribute('src', this.cardData.link)
     elementImage.setAttribute('alt', this.cardData.alt)
+
+    const elementLikeCounter = element.querySelector('.element__like_counter')
+    elementLikeCounter.textContent = this.cardData.likes
 
     const elementTrash = element.querySelector('.element__trash')
     if (!this.cardData.owned) {
@@ -58,19 +64,15 @@ class Card {
   }
 
   _handleTrash(evt) {
-    const popupConfirmTrash = new PopupWithConfirm(
-      '.popup_type_confirm-trash',
-      () => {
-        const element = evt.target.closest('.element')
-        const id = element.getAttribute('data-card-id')
-        if (!id) return
-        api.deleteCard(id).then(() => {
-          element.remove()
-        })
-      },
-    )
-    popupConfirmTrash.setEventListeners()
-    popupConfirmTrash.open()
+    const element = evt.target.closest('.element')
+    const id = element.getAttribute('data-card-id')
+    if (!id) return
+
+    popupConfirmTrash.open(() => {
+      api.deleteCard(id).then(() => {
+        element.remove()
+      })
+    })
   }
 
   _handleClick() {

@@ -23,6 +23,13 @@ class FormValidator {
     this.submitButtonElement.classList.add(this.config.inactiveButtonClass)
   }
 
+  clearForm() {
+    this.clearValidationErrors()
+    this.inputList.forEach((inputElement) => {
+      inputElement.value = ''
+    })
+  }
+
   clearValidationErrors() {
     this.inputList.forEach((inputElement) => {
       this._hideInputError(inputElement)

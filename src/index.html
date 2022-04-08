@@ -141,7 +141,10 @@
         <img class="element__image" src="{{src}}" alt="{{alt}}" />
         <div class="element__description">
           <h2 class="element__title">{{name}}</h2>
-          <button class="element__heart" type="button"></button>
+          <div class="element__likes">
+            <button class="element__heart" type="button"></button>
+            <div class="element__like_counter">&nbsp;</div>
+          </div>
         </div>
         <img class="element__trash" src="<%=require('./images/trash.svg')%>" />
       </article>

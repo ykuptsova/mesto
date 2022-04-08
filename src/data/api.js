@@ -46,6 +46,7 @@ class Api {
           link: card.link,
           alt: `${card.name} by ${card.owner.name}`,
           owned: card.owner._id === userId,
+          likes: card.likes.length,
         })),
       )
       .catch(this._handleError)
@@ -67,6 +68,7 @@ class Api {
         link: card.link,
         alt: `${card.name} by ${card.owner.name}`,
         owned: true,
+        likes: card.likes.length,
       }))
       .catch(this._handleError)
   }
@@ -79,6 +81,11 @@ class Api {
       .then(this._handleResponse)
       .catch(this._handleError)
   }
+
+  // --- работа с лайками
+  likeCard(id) {}
+
+  unlikeCard(id) {}
 
   // --- вспомогательные приватные методы
   _url(path) {

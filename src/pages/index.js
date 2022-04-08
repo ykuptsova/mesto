@@ -61,13 +61,15 @@ function openPopupPicture(card) {
 
 // --- работа с попапами
 const popupProfile = new PopupWithForm('.popup_type_profile', (data) => {
-  api.setUserInfo(data).then((data) => userInfo.setUserInfo(data))
+  return api.setUserInfo(data).then((data) => userInfo.setUserInfo(data))
 })
 const popupPlace = new PopupWithForm('.popup_type_card-add', (data) => {
   const name = data.card_name
   const link = data.link
   addCardFormValidator.disableSubmitButton()
-  api.addCard({ name, link }).then((card) => {
+  return api.addCard({ name, link }).then((card) => {
+    addCardFormValidator.clearForm()
+    if (!card) return
     cardsSection.addItem(card)
   })
 })

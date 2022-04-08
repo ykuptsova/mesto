@@ -1,9 +1,8 @@
 import Popup from './Popup.js'
 
 class PopupWithConfirm extends Popup {
-  constructor(selector, submitCallback) {
+  constructor(selector) {
     super(selector)
-    this.submitCallback = submitCallback
     this.confirmButton = this.popup.querySelector('.popup__confirm-button')
   }
 
@@ -14,6 +13,11 @@ class PopupWithConfirm extends Popup {
       this.submitCallback()
       this.close()
     })
+  }
+
+  open(submitCallback) {
+    this.submitCallback = submitCallback
+    super.open()
   }
 }
 
