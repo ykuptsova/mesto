@@ -3,32 +3,40 @@ import Popup from './Popup.js'
 class PopupWithForm extends Popup {
   constructor(selector, submitCallback) {
     super(selector)
-    this.submitCallback = submitCallback
-    this.form = this.popup.querySelector('.popup__form')
+    this._submitCallback = submitCallback
+    this._form = this._popup.querySelector('.popup__form')
+    this._saveButton = this._form.querySelector('.popup__save-button')
+    this._inputList = this._popup.querySelectorAll('.popup__input')
   }
 
   setEventListeners() {
     super.setEventListeners()
     // добавляем обработчик сабмита формы
-    this.form.addEventListener('submit', () => {
+    this._form.addEventListener('submit', (event) => {
       event.preventDefault()
-      const saveButton = this.form.querySelector('.popup__save-button')
-      saveButton.textContent = 'Сохранение...'
-      const data = this._getInputValues()
-      this.submitCallback(data).finally(() => {
-        saveButton.textContent = 'Сохранить'
-        super.close()
+      this._saveButton.textContent = 'Сохранение...'
+      const data = this.getInputValues()
+      this._submitCallback(data).finally(() => {
+        this._saveButton.textContent = 'Сохранить'
       })
     })
   }
 
-  _getInputValues() {
+  getInputValues() {
     const formValues = {}
-    const inputList = this.popup.querySelectorAll('.popup__input')
-    inputList.forEach((input) => (formValues[input.name] = input.value))
+    this._inputList.forEach((input) => (formValues[input.name] = input.value))
     return formValues
+  }
 
-    // return new FormData(this.form)
+  setInputValues(data) {
+    this._inputList.forEach((input) => {
+      input.value = data[input.name]
+    })
+  }
+
+  close() {
+    super.close()
+    this._form.reset()
   }
 }
 

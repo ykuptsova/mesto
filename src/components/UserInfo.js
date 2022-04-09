@@ -1,32 +1,37 @@
 class UserInfo {
   constructor(config) {
-    this.avatar = document.querySelector(config.avatar)
-    this.name = document.querySelector(config.name)
-    this.info = document.querySelector(config.info)
-    this.editButton = document.querySelector(config.editButton)
+    this._id = null
+    this._name = null
+    this._info = null
+    this._avatar = null
+
+    this._avatarElement = document.querySelector(config.avatar)
+    this._nameElement = document.querySelector(config.name)
+    this._infoElement = document.querySelector(config.info)
   }
 
   // считывает данные пользователя со страницы и возвращает их в объекте
   getUserInfo() {
     return {
-      avatar: this.avatar.getAttribute('src'),
-      name: this.name.textContent,
-      info: this.info.textContent,
+      _id: this._id,
+      name: this._nameElement.textContent,
+      info: this._infoElement.textContent,
+      avatar: this._avatarElement.getAttribute('src'),
     }
   }
 
   // устанавливает данные формы на страницу
-  setUserInfo(data) {
-    if (data.avatar) {
-      this.avatar.setAttribute('src', data.avatar)
-    }
-    this.name.textContent = data.name
-    this.info.textContent = data.info
-  }
+  setUserInfo({ _id, name, info, avatar }) {
+    this._id = _id
+    this._name = name
+    this._info = info
+    this._avatar = avatar
 
-  // разрешает редактирование профиля пользователя
-  enableEdit() {
-    this.editButton.classList.add('profile__edit-button_enabled')
+    this._nameElement.textContent = name
+    this._infoElement.textContent = info
+    if (avatar) {
+      this._avatarElement.setAttribute('src', avatar)
+    }
   }
 }
 

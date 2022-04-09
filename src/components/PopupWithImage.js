@@ -3,14 +3,14 @@ import Popup from './Popup.js'
 class PopupWithImage extends Popup {
   constructor(selector) {
     super(selector)
-    this.description = this.popup.querySelector('.popup__image-description')
-    this.image = this.popup.querySelector('.popup__image')
+    this._description = this._popup.querySelector('.popup__image-description')
+    this._image = this._popup.querySelector('.popup__image')
   }
 
   open(card) {
-    this.description.textContent = card.name
-    this.image.setAttribute('src', card.link)
-    this.image.setAttribute('alt', card.alt)
+    this._description.textContent = card.name
+    this._image.setAttribute('src', card.link)
+    this._image.setAttribute('alt', card.alt)
 
     super.open()
   }

@@ -1,112 +1,120 @@
-import api from '../data/api.js'
-import PopupWithConfirm from '../components/PopupWithConfirm.js'
-
-const popupConfirmTrash = new PopupWithConfirm('.popup_type_confirm-trash')
-popupConfirmTrash.setEventListeners()
-
 class Card {
-  constructor(userId, cardData, template, handleCardClick) {
-    this.userId = userId
-    this.cardData = cardData
-    this.template = template
-    this.handleCardClick = handleCardClick
-    this.cardTemplate = this.template.content.querySelector('.element')
-    this.element = null
+  constructor(
+    userId,
+    cardData,
+    template,
+    handleCardClick,
+    popupConfirmTrash,
+    api,
+  ) {
+    this._userId = userId
+    this._cardData = cardData
+    this._template = template
+    this._handleCardClick = handleCardClick
+    this._popupConfirmTrash = popupConfirmTrash
+    this._api = api
+
+    this._element = null
   }
 
   render() {
     // клонируем template карточки
-    const isCreated = Boolean(this.element)
-    if (!isCreated) {
-      this.element = this.cardTemplate.cloneNode(true)
-    }
+    const cardTemplate = this._template.content.querySelector('.element')
+    this._element = cardTemplate.cloneNode(true)
 
     // наполняем элемент карточки данными
-    this.element.setAttribute('data-card-id', this.cardData._id)
+    this._element.setAttribute('data-card-id', this._cardData._id)
 
-    const elementTitle = this.element.querySelector('.element__title')
-    elementTitle.textContent = this.cardData.name
+    this._title = this._element.querySelector('.element__title')
+    this._title.textContent = this._cardData.name
 
-    const elementImage = this.element.querySelector('.element__image')
-    elementImage.setAttribute('src', this.cardData.link)
-    elementImage.setAttribute('alt', this.cardData.alt)
+    this._image = this._element.querySelector('.element__image')
+    this._image.setAttribute('src', this._cardData.link)
+    this._image.setAttribute('alt', this._cardData.alt)
 
-    const elementHeart = this.element.querySelector('.element__heart')
-    if (this.cardData.liked) {
-      elementHeart.classList.add('element__heart_active')
-    } else {
-      elementHeart.classList.remove('element__heart_active')
-    }
+    this._heart = this._element.querySelector('.element__heart')
+    this._likeCounter = this._element.querySelector('.element__like_counter')
+    this._updateLikeState()
 
-    const elementLikeCounter = this.element.querySelector(
-      '.element__like_counter',
-    )
-    elementLikeCounter.textContent = this.cardData.likes
-
-    const elementTrash = this.element.querySelector('.element__trash')
-    if (this.cardData.owned) {
-      elementTrash.classList.add('element__trash_active')
-    } else {
-      elementTrash.classList.remove('element__trash_active')
-    }
+    this._trash = this._element.querySelector('.element__trash')
+    this._updateTrashState()
 
     // добавляем слушатели на элемент карточки
-    if (!isCreated) {
-      this._setEventListeners(this.element)
-    }
+    this._setEventListeners()
 
-    return this.element
+    return this._element
   }
 
-  _setEventListeners(element) {
+  _updateLikeState() {
+    this._likeCounter.textContent = this._cardData.likes
+    if (this._cardData.liked) {
+      this._heart.classList.add('element__heart_active')
+    } else {
+      this._heart.classList.remove('element__heart_active')
+    }
+  }
+
+  _updateTrashState() {
+    if (this._cardData.owned) {
+      this._trash.classList.add('element__trash_active')
+    } else {
+      this._trash.classList.remove('element__trash_active')
+    }
+  }
+
+  _setEventListeners() {
     // добавляем слушатель like карточки
-    element
+    this._element
       .querySelector('.element__heart')
-      .addEventListener('click', (evt) => this._handleLike(evt))
+      .addEventListener('click', () => this._handleLike())
 
     // добавляем слушатель открытия попапа с картинкой
-    element
+    this._element
       .querySelector('.element__image')
-      .addEventListener('click', (evt) => this._handleClick(evt))
+      .addEventListener('click', () => this._handleClick())
 
     // добавляем слушатель trash карточки
-    if (this.cardData.owned) {
-      element
+    if (this._cardData.owned) {
+      this._element
         .querySelector('.element__trash')
-        .addEventListener('click', (evt) => this._handleTrash(evt))
+        .addEventListener('click', () => this._handleTrash())
     }
   }
 
-  _handleLike(evt) {
-    if (this.cardData.liked) {
-      api.unlikeCard(this.cardData._id, this.userId).then((card) => {
+  _handleLike() {
+    const request = this._cardData.liked
+      ? this._api.unlikeCard(this._cardData._id, this._userId)
+      : this._api.likeCard(this._cardData._id, this._userId)
+    request
+      .then((card) => {
         if (!card) return
-        this.cardData = card
-        this.render()
+        this._cardData = card
+        this._updateLikeState()
       })
-    } else {
-      api.likeCard(this.cardData._id, this.userId).then((card) => {
-        if (!card) return
-        this.cardData = card
-        this.render()
+      .catch((error) => {
+        console.log('Could not like / unlike card:', error)
       })
-    }
   }
 
-  _handleTrash(evt) {
-    const element = evt.target.closest('.element')
-    const id = element.getAttribute('data-card-id')
+  _handleTrash() {
+    const id = this._cardData._id
     if (!id) return
 
-    popupConfirmTrash.open(() => {
-      api.deleteCard(id).then(() => {
-        element.remove()
-      })
+    this._popupConfirmTrash.open(() => {
+      this._api
+        .deleteCard(id)
+        .then(() => {
+          this._element.remove()
+          this._popupConfirmTrash.close()
+        })
+        .catch((error) => {
+          console.log('Could not delete card:', error)
+        })
     })
   }
 
   _handleClick() {
-    this.handleCardClick(this.cardData)
+    this._handleCardClick(this._cardData)
   }
 }
 

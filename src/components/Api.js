@@ -1,19 +1,13 @@
 class Api {
   constructor(options) {
-    this.options = options
+    this._options = options
   }
 
   // --- работа с профилем пользователя
   getUserInfo() {
     return fetch(this._url('users/me'), this._init())
       .then(this._handleResponse)
-      .then((userInfo) => ({
-        _id: userInfo._id,
-        name: userInfo.name,
-        info: userInfo.about,
-        avatar: userInfo.avatar,
-      }))
-      .catch(this._handleError)
+      .then((userInfo) => this._toUserInfo(userInfo))
   }
 
   setUserInfo(data) {
@@ -27,7 +21,6 @@ class Api {
     return fetch(this._url('users/me'), this._init(config))
       .then(this._handleResponse)
       .then((userInfo) => this._toUserInfo(userInfo))
-      .catch(this._handleError)
   }
 
   setUserAvatar(data) {
@@ -40,7 +33,6 @@ class Api {
     return fetch(this._url('users/me/avatar'), this._init(config))
       .then(this._handleResponse)
       .then((userInfo) => this._toUserInfo(userInfo))
-      .catch(this._handleError)
   }
 
   // --- работа с карточками
@@ -48,7 +40,6 @@ class Api {
     return fetch(this._url('cards'), this._init())
       .then(this._handleResponse)
       .then((cards) => cards.map((card) => this._toCard(card, userId)))
-      .catch(this._handleError)
   }
 
   addCard(data) {
@@ -62,16 +53,15 @@ class Api {
     return fetch(this._url('cards'), this._init(config))
       .then(this._handleResponse)
       .then((card) => this._toCard(card, card.owner._id))
-      .catch(this._handleError)
   }
 
   deleteCard(id) {
     const config = {
       method: 'DELETE',
     }
-    return fetch(this._url(`cards/${id}`), this._init(config))
-      .then(this._handleResponse)
-      .catch(this._handleError)
+    return fetch(this._url(`cards/${id}`), this._init(config)).then(
+      this._handleResponse,
+    )
   }
 
   // --- работа с лайками
@@ -82,7 +72,6 @@ class Api {
     return fetch(this._url(`cards/${id}/likes`), this._init(config))
       .then(this._handleResponse)
       .then((card) => this._toCard(card, userId))
-      .catch(this._handleError)
   }
 
   unlikeCard(id, userId) {
@@ -92,17 +81,16 @@ class Api {
     return fetch(this._url(`cards/${id}/likes`), this._init(config))
       .then(this._handleResponse)
       .then((card) => this._toCard(card, userId))
-      .catch(this._handleError)
   }
 
   // --- вспомогательные приватные методы
   _url(path) {
-    return `${this.options.baseUrl}/${path}`
+    return `${this._options.baseUrl}/${path}`
   }
 
   _init(config) {
     return {
-      headers: this.options.headers,
+      headers: this._options.headers,
       ...config,
     }
   }
@@ -130,11 +118,7 @@ class Api {
 
   _handleResponse(res) {
     if (res.ok) return res.json()
-    return Promise.reject(`Ошибка: ${res.status}`)
-  }
-
-  _handleError(err) {
-    console.error(err)
+    return Promise.reject(`Request failed: ${res.status}`)
   }
 }
 

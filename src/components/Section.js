@@ -1,20 +1,20 @@
 class Section {
   constructor(config, containerSelector) {
-    this.items = config.items
-    this.renderer = config.renderer
-    this.container = document.querySelector(containerSelector)
+    this._items = config.items
+    this._renderer = config.renderer
+    this._container = document.querySelector(containerSelector)
   }
 
   render() {
-    this.items.forEach((item) => {
-      const element = this.renderer(item)
-      this.container.append(element)
+    this._items.forEach((item) => {
+      const element = this._renderer(item)
+      this._container.append(element)
     })
   }
 
   addItem(item) {
-    const element = this.renderer(item)
-    this.container.prepend(element)
+    const element = this._renderer(item)
+    this._container.prepend(element)
   }
 }
 

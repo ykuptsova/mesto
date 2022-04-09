@@ -1,37 +1,41 @@
 class FormValidator {
   constructor(config, formElement) {
-    this.config = config
-    this.formElement = formElement
-    this.submitButtonElement = this.formElement.querySelector(
-      this.config.submitButtonSelector,
+    this._config = config
+    this._formElement = formElement
+    this._submitButtonElement = this._formElement.querySelector(
+      this._config.submitButtonSelector,
     )
-    this.inputList = Array.from(
-      this.formElement.querySelectorAll(this.config.inputSelector),
+    this._inputList = Array.from(
+      this._formElement.querySelectorAll(this._config.inputSelector),
     )
   }
 
   enableValidation() {
-    this.formElement.addEventListener('submit', (evt) => {
+    this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault()
     })
     // объект props передаём дальше, он будет содержать в себе все необходимые свойства
     this._setEventListeners()
   }
 
+  resetValidation() {
+    this._toggleButtonState()
+    this._clearValidationErrors()
+  }
+
   disableSubmitButton() {
     // отключаем кнопку submit
-    this.submitButtonElement.classList.add(this.config.inactiveButtonClass)
+    this._submitButtonElement.classList.add(this._config.inactiveButtonClass)
+    this._submitButtonElement.disabled = true
   }
 
   clearForm() {
-    this.clearValidationErrors()
-    this.inputList.forEach((inputElement) => {
-      inputElement.value = ''
-    })
+    this._clearValidationErrors()
+    this._formElement.reset()
   }
 
-  clearValidationErrors() {
-    this.inputList.forEach((inputElement) => {
+  _clearValidationErrors() {
+    this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement)
     })
   }
@@ -42,7 +46,7 @@ class FormValidator {
     //   иначе кнопка будет активной до первого ввода в поля формы.
     this._toggleButtonState()
     // навешиваем слушатель на ввод в поля пароля
-    this.inputList.forEach((inputElement) => {
+    this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidity(inputElement)
         this._toggleButtonState()
@@ -52,12 +56,12 @@ class FormValidator {
 
   _toggleButtonState() {
     // проверяем валидность формы
-    const isFormValid = this.formElement.checkValidity()
+    const isFormValid = this._formElement.checkValidity()
     // если форма невалидна, то присваиваем свойству disabled кнопки значение true
-    this.submitButtonElement.disabled = !isFormValid
+    this._submitButtonElement.disabled = !isFormValid
     // если форма невалидна, добавляем кнопке класс
-    this.submitButtonElement.classList.toggle(
-      this.config.inactiveButtonClass,
+    this._submitButtonElement.classList.toggle(
+      this._config.inactiveButtonClass,
       !isFormValid,
     )
   }
@@ -72,15 +76,15 @@ class FormValidator {
 
   _hideInputError(inputElement) {
     const errorElement = inputElement.nextElementSibling
-    inputElement.classList.remove(this.config.inputErrorClass)
-    errorElement.classList.remove(this.config.errorVisibleClass)
+    inputElement.classList.remove(this._config.inputErrorClass)
+    errorElement.classList.remove(this._config.errorVisibleClass)
     errorElement.textContent = ''
   }
 
   _showInputError(inputElement) {
     const errorElement = inputElement.nextElementSibling
-    inputElement.classList.add(this.config.inputErrorClass)
-    errorElement.classList.add(this.config.errorVisibleClass)
+    inputElement.classList.add(this._config.inputErrorClass)
+    errorElement.classList.add(this._config.errorVisibleClass)
     errorElement.textContent = inputElement.validationMessage
   }
 }
